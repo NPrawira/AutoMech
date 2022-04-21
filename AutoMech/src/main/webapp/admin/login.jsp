@@ -24,11 +24,11 @@
                                     <form action="loginadmin.jsp" class="user">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                id="exampleInputText" placeholder="Username">
+                                                id="exampleInputText" name="username" placeholder="Username">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" name="password" placeholder="Password">
                                         </div>
                                         <p style="color: red;">
 			              					<%

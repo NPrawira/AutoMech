@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,11 +129,11 @@
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString(2));%></td>
-											<td><% out.println(rs.getString(3));%></td>
-											<td><% out.println(rs.getString(5));%></td>
-											<td><% out.println(rs.getString(6));%></td>
-											<td><% out.println(rs.getString(7));%></td>
+											<td><% out.println(rs.getString("name"));%></td>
+											<td><% out.println(rs.getString("email"));%></td>
+											<td><% out.println(rs.getString("phone_no"));%></td>
+											<td><% out.println(rs.getString("address"));%></td>
+											<td><% out.println(rs.getString("postal_code"));%></td>
 										</tr>
 									</tbody>
 									<% } %>

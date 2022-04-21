@@ -1,11 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
-	try {
-		if(session.getAttribute("idc")!=null) {
-			response.sendRedirect("index.jsp");
-		}
-	} catch(Exception e) {}
+if(session.getAttribute("idc") != null) {
+	response.sendRedirect("index.jsp");
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -23,11 +21,11 @@
 	            			<form action="logincustomer.jsp" id="formLogin" name="formLogin" method="post" onsubmit="return validate();">
 	            				<h1 class="card-title text-center mb-5 fw-bold fs-5">Login</h1>
 	            				<p style="color: green;">
-	              					<%
-										if(request.getParameter("success") != null) {
-											out.print("Registration success. Please login.");
-										}
-									%>
+	              				<%
+								if(request.getParameter("success") != null) {
+									out.print("Registration success. Please login.");
+								}
+								%>
 	              				</p>
 	            				<div class="form-floating mb-3">
 	                				<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
@@ -38,13 +36,13 @@
 									<label for="password">Password</label>
 								</div>
 								<p style="color: red;">
-	              					<%
-	              					try {
-	              						if(session.getAttribute("val").equals("1")) {
-	              							out.print("Email or password is incorrect!");
-	                                	}
-	                                } catch(Exception e) {}
-									%>
+	              				<%
+	              				try {
+	              					if(session.getAttribute("val").equals("1")) {
+	          							out.print("Email or password is incorrect!");
+	                            	}
+	              				} catch(Exception e) {}
+								%>
 								</p>
 								<hr class="my-4">
 								<div class="d-grid">

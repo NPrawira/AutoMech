@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	try {
-		if(session.getAttribute("idc") != null) {
-			response.sendRedirect("index.jsp");
-		}
-	} catch(Exception e) {}
+if(session.getAttribute("idc") != null) {
+	response.sendRedirect("index.jsp");
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -25,39 +23,39 @@
 	            			<form action="createCustomer" method="post" onsubmit="return validate();">
 	              				<div class="row">
 		              				<div class="form-floating col-md-6 mb-3">
-		                				<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-		                				<label for="email">Email</label>
-		              				</div>
-		              				<div class="form-floating col-md-6 mb-3">
-						            	<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-						            	<label for="password">Password</label>
-									</div>
-	              				</div>
-	              				<div class="row">
-	              					<div class="form-floating col-md-6 mb-3">
-		                				<input type="text" class="form-control" id="name" name="name" placeholder="Full name" required>
+		                				<input type="text" class="form-control" id="name" name="name" placeholder="Full name" required maxlength="30">
 		                				<label for="name">Full name</label>
 		              				</div>
 		              				<div class="form-floating col-md-6 mb-3">
-						            	<input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="Phone number" required>
+		                				<input type="email" class="form-control" id="email" name="email" placeholder="Email" required maxlength="30">
+		                				<label for="email">Email</label>
+		              				</div>
+	              				</div>
+	              				<div class="row">
+	              					<div class="form-floating col-md-6 mb-3">
+						            	<input type="password" class="form-control" id="password" name="password" placeholder="Password" required maxlength="20">
+						            	<label for="password">Password</label>
+									</div>
+		              				<div class="form-floating col-md-6 mb-3">
+						            	<input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="Phone number" required maxlength="20">
 						            	<label for="phone_no">Phone number</label>
 									</div>
 	              				</div>
 	              				<div class="row">
 	              					<div class="form-floating col-md-10 mb-3">
-	              						<textarea class="form-control" id="address" name="address" placeholder="Address" style="height:100px" required></textarea>
+	              						<textarea class="form-control" id="address" name="address" placeholder="Address" style="height:100px" required maxlength="100"></textarea>
 	              						<label for="address">Address</label>
 									</div>
 		              				<div class="form-floating col-md-2 mb-3">
-						            	<input type="text" class="form-control" id="postal_code" name="postal_code" placeholder="Postal code" required>
+						            	<input type="number" class="form-control" id="postal_code" name="postal_code" placeholder="Postal code" required maxlength="5">
 						            	<label for="postal_code">Postal code</label>
 									</div>
 	              				</div>
 	              				<p style="color: red;">
 								<%
-									if(request.getParameter("error") != null) {
-										out.print("An error occurred. Please retry the registration.");
-									}
+								if(request.getParameter("error") != null) {
+									out.print("An error occurred. Please retry the registration.");
+								}
 								%>
 								</p>
 	              				<hr class="my-4">

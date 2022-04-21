@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>

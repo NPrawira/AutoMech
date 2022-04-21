@@ -25,8 +25,9 @@ public class CreateMotorbike extends HttpServlet {
 		String model = req.getParameter("model");
 		int kilometer = Integer.parseInt(req.getParameter("kilometer"));
 		
-		PreparedStatement pstmt = null;
 		Connection con = null;
+		PreparedStatement pstmt = null;
+		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
@@ -45,11 +46,11 @@ public class CreateMotorbike extends HttpServlet {
 			System.out.println(e);
 		} finally {
 			if(con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					System.out.println(e);
-				}
+				 try {
+					 con.close();
+				 } catch (SQLException e) {
+	             	e.printStackTrace();
+				 }
 			}
 		}
 	}

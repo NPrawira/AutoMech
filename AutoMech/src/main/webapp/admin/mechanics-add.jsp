@@ -1,10 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ page import="java.util.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Service Queries - AutoMech Administrator</title>
+    <title>Mechanics - AutoMech Administrator</title>
     <jsp:include page="support/head.jsp"></jsp:include>
 </head>
 <body id="page-top">
@@ -35,13 +43,13 @@
                     <span>Motorbike Brands</span>
 				</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="mechanics.jsp">
                     <i class="fas fa-fw fa-screwdriver"></i>
                     <span>Mechanics</span>
 				</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="service-types.jsp">
                     <i class="fas fa-fw fa-tape"></i>
                     <span>Service Types</span>
@@ -91,8 +99,36 @@
                 <jsp:include page="support/navtop.jsp"></jsp:include>
                 <div class="container-fluid">
                 	<!-- Page Heading -->
-                	<h1 class="h3 mb-4 text-gray-800">Add New Service Type</h1>
-                	
+                	<h1 class="h3 mb-4 text-gray-800">Add Mechanic</h1>
+                	<div class="container col-md-5">
+						<form action="createMechanic">
+							<div class="card">
+								<div class="card-body">
+									<fieldset class="form-group">
+										<%
+										Random r = new Random();
+										int n = r.nextInt(900) + 100;
+										%>
+										<label>Mechanic code</label>
+										<input type="text" class="form-control" id="mechanic_code" name="mechanic_code" value="M<%=n%>" style="background: white;" readonly>
+										<label>Name</label>
+										<input type="text" class="form-control" id="name" name="name" maxlength="30" required>
+										<label>Specialization</label>
+										<select class="form-control" id="specialization" name="specialization" required>
+		                					<option disabled="disabled" selected="selected">Select specialization...</option>
+		                					<option value="Body">Body</option>
+		                					<option value="Brake">Brake</option>
+		                					<option value="Electric">Electric</option>
+		                					<option value="Engine">Engine</option>
+		                					<option value="Paint">Paint</option>
+		                					<option value="Transmission">Transmission</option>
+		                				</select>
+									</fieldset>
+									<input class="btn btn-primary" type="submit" value="Add mechanic">
+								</div>
+							</div>
+						</form>
+					</div>
                 </div>
             </div>
             <footer class="sticky-footer bg-white">

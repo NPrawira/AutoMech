@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,35 +113,31 @@
                 		</div>
                 		<div class="card-body">
                 			<div class="table-responsive">
-                				<table id="tb_matakuliah" class="table table-bordered" width="100%" cellspacing="0">
+                				<table id="" class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
 	                						<td>Service tag</td>
 	                						<td>Motorbike</td>
-	                						<td>Start date</td>
-	                						<td>Finish date</td>
+	                						<td>Request date</td>
 	                						<td>Service type</td>
-	                						<td>Mechanic</td>
 	                						<td>Status</td>
 	                						<td>Action</td>
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM services");
-		                        		while(rs.next()) {
+	                				rs = stmt.executeQuery("SELECT * FROM services");
+		                        	while(rs.next()) {
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td><% out.println(rs.getString("service_tag")); %></td>
+											<td><% out.println(rs.getString("motorbike")); %></td>
+											<td><% out.println(rs.getString("start_date")); %></td>
+											<td><% out.println(rs.getString("service_type")); %></td>
+											<td><% out.println(rs.getString("status")); %></td>
 											<td style="text-align: center;">
 												<form action="services-form.jsp" method="post">
-													<input type="hidden" value="<% out.println(rs.getString(1)); %>" name="service">
+													<input type="hidden" value="<% out.println(rs.getInt("service_id")); %>" name="service">
 				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
 				        						</form>
 											</td>

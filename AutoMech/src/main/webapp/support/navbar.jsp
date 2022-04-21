@@ -6,7 +6,7 @@
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 				<%
 				try {
-					if(session.getAttribute("customer")==null ||session.getAttribute("customer")=="") { %>
+					if(session.getAttribute("customer") == null ||session.getAttribute("customer") == "") { %>
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="login.jsp"><i class="fa fa-sign-in" style="color:white; padding:10px"></i>Login</a>
 	            		</li>

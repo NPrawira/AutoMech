@@ -34,11 +34,11 @@ public class CreateBrand extends HttpServlet {
 			System.out.print(e);
 		} finally {
 			if(con != null) {
-				try {
-	            	con.close();
-				} catch (SQLException e) {
-	            	e.printStackTrace();
-				}
+				 try {
+					 con.close();
+				 } catch (SQLException e) {
+	             	e.printStackTrace();
+				 }
 			}
 		}
 	}

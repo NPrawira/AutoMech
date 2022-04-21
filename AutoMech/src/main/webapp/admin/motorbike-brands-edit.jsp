@@ -1,21 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection con = null;
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = null;
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
 	
-	String id = request.getParameter("brand");
-	ResultSet rs = null;
-	rs = stmt.executeQuery("SELECT * FROM `motorbike_brands` WHERE `motorbike_brand_id` ='"+id+"'");
-	rs.next();
+String id = request.getParameter("brand");
+ResultSet rs = null;
+rs = stmt.executeQuery("SELECT * FROM `motorbike_brands` WHERE `motorbike_brand_id` ='"+id+"'");
+rs.next();
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Motorbike Brands: <%=rs.getString(2)%> - AutoMech Administrator</title>
+    <title>Motorbike Brands: <%=rs.getString("name")%> - AutoMech Administrator</title>
     <jsp:include page="support/head.jsp"></jsp:include>
 </head>
 <body id="page-top">
@@ -110,12 +118,12 @@
 						<form action="editBrand">
 							<div class="card">
 								<div class="card-body">
-									<input type="hidden" id="brand_id" name="brand_id" value="<%=rs.getInt(1)%>">
+									<input type="hidden" id="brand_id" name="brand_id" value="<%=rs.getInt("motorbike_brand_id")%>">
 									<fieldset class="form-group">
 										<label>Name</label>
-										<input type="text" class="form-control" name="name" value="<%=rs.getString(2)%>" required>
+										<input type="text" class="form-control" name="name" value="<%=rs.getString("name")%>" required>
 									</fieldset>
-									<input class="btn btn-primary" type="submit" value="Edit brand">
+									<input class="btn btn-primary" type="submit" value="Save">
 								</div>
 							</div>
 						</form>

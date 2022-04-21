@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,34 +113,35 @@
                 		</div>
                 		<div class="card-body">
                 			<div class="text-left">
-								<a href="service-types-form.jsp" type="button" class="btn btn-success btn-user">Add new service type</a>
+								<a href="service-types-add.jsp" type="button" class="btn btn-success btn-user">Add service type</a>
 							</div>
 							<hr>
                 			<div class="table-responsive">
                 				<table id="" class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
+	                						<td>Code</td>
 	                						<td>Name</td>
 	                						<td>Price</td>
 	                						<td>Action</td>
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM service_types");
+	                					rs = stmt.executeQuery("SELECT * FROM service_types ORDER BY name ASC");
 		                        		while(rs.next()) {
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString(2)); %></td>
-											<td><% out.println(rs.getString(3)); %></td>
+											<td><% out.println(rs.getString("service_code")); %></td>
+											<td><% out.println(rs.getString("name")); %></td>
+											<td>RM<% out.println(rs.getInt("price")); %></td>
 											<td style="text-align: center;">
-												<form action="service-types-form.jsp" method="post">
-													<input type="hidden" value="<% out.println(rs.getString(1)); %>" name="brand">
-				        							<input type="submit" class="btn btn-warning" value="Edit">
+												<form action="service-types-edit.jsp" method="post" style="display: inline;">
+													<input type="hidden" value="<% out.println(rs.getInt("service_type_id")); %>" name="service-type">
+				        							<input type="submit" class="btn btn-warning" value="Manage">
 				        						</form>
-									        	<br>
-									        	<form action="deleteMotorbikeBrand" method="post" onsubmit="return confirm('Do you want to delete this motorbike brand?');">
-											        <input type="hidden" value="<% out.print(rs.getString(1)); %>" name="brand">
+									        	<form action="deleteServiceType" method="post" style="display: inline;" onsubmit="return confirm('Do you want to delete this service type?');">
+											        <input type="hidden" value="<% out.print(rs.getInt("service_type_id")); %>" name="service-type">
 											        <input type="submit" class="btn btn-danger" value="Delete">		        
 										        </form>
 											</td>

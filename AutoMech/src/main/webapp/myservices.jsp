@@ -1,13 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	String id = null;
-	if(session.getAttribute("idc") != null) {
-		id = session.getAttribute("idc").toString();		
-	} else {
-		response.sendRedirect("login.jsp");
-	}
+String id = null;
+String name = null;
+if(session.getAttribute("idc") != null) {
+	id = session.getAttribute("idc").toString();
+	name = session.getAttribute("customer").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
 %>
 <!DOCTYPE html>
 <html>
@@ -47,20 +53,19 @@
 			</div>
 		</nav>
         <div class="container">
-        	<br>
-			<br>
+        	<br><br>
 			<h2 class="d-flex justify-content-center">Motorbike Services List</h2>
 			<br>
-			<form action="" method="get">
+			<form action="searchservice.jsp" method="get" name="search" onsubmit="return validate();">
 				<div class="row">
 					<div class='col-md-10 mb-3'>
-						<input class="form-control" type="text" placeholder="Search service tag..." aria-label="Search" id="searchservice" name="searchservice">    
+						<input class="form-control" type="text" placeholder="Search service tag..." aria-label="Search" id="service" name="service">    
 					</div>
 					<div class='col-md-1 mb-3'>
 						<input type="submit" class="btn btn-info" value="Search">
 					</div>
 					<div class='col-md-1 mb-3'>
-						<input type="submit" class="btn btn-danger" value="Reset">		
+						<a href="myservices.jsp" type="submit" class="btn btn-danger">Reset</a>		
 					</div>
 				</div>
 			</form>
@@ -72,33 +77,58 @@
 	                		<td>Service tag</td>
 	                		<td>License plate</td>
 	                		<td>Service type</td>
-	                		<td>Status</td>
 	                		<td>Action</td>
 	                	</tr>
 					</thead>
                 	<tbody>
-                		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No service queries.</td></tr>
-                			<tr>
-								<td>SRV1</td>
-								<td>B1234ABC</td>
-								<td>Lubricant refill</td>
-								<td>In service</td>
-								<td style="text-align: center">
-									<form action="" method="post">
-										<input type="hidden" value="" name="manage">
-					        			<input type="submit" class="btn btn-warning btn-user" value="Manage">
-									</form>
-								</td>
-							</tr>
+                		<%
+	           			ResultSet rs = null;
+	           			rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + name + "'");
+	           			if(!rs.isBeforeFirst()) {
+	                   	%>
+                   		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No service queries.</td></tr>
+                   		<%
+                   		} else {
+                   			while(rs.next()) {
+						%>
+                    	<tr>
+                        	<td><%out.println(rs.getString("service_tag"));%></td>
+                			<td><%out.println(rs.getString("motorbike"));%></td>
+                			<td><%out.println(rs.getString("service_type"));%></td>
+                    		<td style="text-align: center">
+                    			<form action="view-service.jsp" method="post" style="display: inline;">
+                    				<input type="hidden" value="<%out.println(rs.getInt("service_id"));%>" name="view">
+                    				<input type="submit" class="btn btn-primary btn-user" value="View">
+                    			</form>
+                    		</td>
+                    	</tr>
+						<%
+	                    	}
+	                   	}
+	           			%>
 					</tbody>
                	</table>
 			</div>
 			<br>
         </div>
-        <jsp:include page="support/footer.jsp"></jsp:include>
+        <br>
+        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
+			<div class="container">
+				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
+			</div>
+		</footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script type="text/javascript">
+	        function validate() {
+	        	var x = document.forms["search"]["service"].value;
+	        	if (x == null || x == "") {
+	        		alert("Enter your search!");
+	        		return false;
+	            }
+	    	}
+        </script>
     </body>
 </html>

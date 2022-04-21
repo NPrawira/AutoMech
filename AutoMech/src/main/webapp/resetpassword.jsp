@@ -1,41 +1,38 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	try {
-		if(session.getAttribute("idc") != null) {
-			response.sendRedirect("index.jsp");
-		}
-	} catch(Exception e) {}
-%>
-<% 
-	try {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+if(session.getAttribute("idc") != null) {
+	response.sendRedirect("index.jsp");
+}
+
+try {
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 		
-		if(request.getParameter("reset") != null) {
-			String email = request.getParameter("email");
-			String phone_no = request.getParameter("phone_no");
-			String newpass = request.getParameter("newpassword");
-			String confirmpass = request.getParameter("confirmpassword");
+	if(request.getParameter("reset") != null) {
+		String email = request.getParameter("email");
+		String phone_no = request.getParameter("phone_no");
+		String newpass = request.getParameter("newpassword");
+		String confirmpass = request.getParameter("confirmpassword");
 			
-			if(confirmpass.equals(newpass)) {
-				PreparedStatement pstmt = null;
-				pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE email = ? AND phone_no = ?");
-				pstmt.setString(1, newpass);
-				pstmt.setString(2, email);
-				pstmt.setString(3, phone_no);
-				pstmt.executeUpdate();
-				request.setAttribute("success", "Your password has been reset.");
-				con.close();	
-			} else {
-				request.setAttribute("wrong", "Password don't match.");
-			}
+		if(confirmpass.equals(newpass)) {
+			PreparedStatement pstmt = null;
+			pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE email = ? AND phone_no = ?");
+			pstmt.setString(1, newpass);
+			pstmt.setString(2, email);
+			pstmt.setString(3, phone_no);
+			pstmt.executeUpdate();
+			request.setAttribute("success", "Your password has been reset.");
+			con.close();	
+		} else {
+			request.setAttribute("wrong", "Password don't match.");
 		}
-	} catch(Exception e) {
-		System.out.print(e);
-		request.setAttribute("error", "An error occurred. Please try again.");
 	}
+} catch(Exception e) {
+	e.printStackTrace();
+	request.setAttribute("error", "An error occurred. Please try again.");
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -72,22 +69,21 @@
 						            	<label for="password">Confirm new password</label>
 									</div>
 	              				</div>
-	              				<div class="column">
-	              					<p style="color: red;">
+	              				<div class="row">
+	              					<p style="color: red; display: inline;">
 	              					<%
-			              				if(request.getAttribute("error") != null) {
-			        						out.println(request.getAttribute("error"));
-			        					} 
-										if(request.getAttribute("wrong") != null) {
-			        						out.println(request.getAttribute("wrong"));
-			        					}
+			              			if(request.getAttribute("error") != null) {
+			        					out.println(request.getAttribute("error"));
+			        				} else if(request.getAttribute("wrong") != null) {
+			        					out.println(request.getAttribute("wrong"));
+			        				}
 									%>
 	              					</p>
-	              					<p style="color: green;">
+	              					<p style="color: green; display: inline;">
 	              					<%
-			              				if(request.getAttribute("success") != null) {
-			        						out.println(request.getAttribute("success"));
-			        					}
+			              			if(request.getAttribute("success") != null) {
+			        					out.println(request.getAttribute("success"));
+			        				}
 									%>
 	              					</p>
 	              				</div>

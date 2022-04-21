@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,14 +130,14 @@
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString(2)); %></td>
+											<td><% out.println(rs.getString("name")); %></td>
 											<td style="text-align: center;">
 												<form action="motorbike-brands-edit.jsp" method="post" style="display: inline;">
-													<input type="hidden" value="<% out.println(rs.getInt(1)); %>" name="brand">
+													<input type="hidden" value="<% out.println(rs.getInt("motorbike_brand_id")); %>" name="brand">
 				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
 				        						</form>
 									        	<form action="deleteBrand" method="post" style="display: inline;" onsubmit="return confirm('Do you want to delete this motorbike brand?');">
-											        <input type="hidden" value="<% out.print(rs.getInt(1)); %>" name="brand">
+											        <input type="hidden" value="<% out.print(rs.getInt("motorbike_brand_id")); %>" name="brand">
 											        <input type="submit" class="btn btn-danger btn-user" value="Delete">		        
 										        </form>
 											</td>

@@ -1,13 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	String id = null;
-	if(session.getAttribute("idc") != null) {
-		id = session.getAttribute("idc").toString();		
-	} else {
-		response.sendRedirect("login.jsp");
-	}
+String id = null;
+String name = null;
+if(session.getAttribute("idc") != null) {
+	id = session.getAttribute("idc").toString();
+	name = session.getAttribute("customer").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -24,7 +26,7 @@
 						<div class="card-body p-4 p-sm-5">
 	            			<form action="changePassword" method="post" onsubmit="return validate();">
 	            				<h1 class="card-title text-center mb-5 fw-bold fs-5">Change Password</h1>
-	            				<input name="id" type="hidden" value="<%= session.getAttribute("idc")%>">
+	            				<input name="id" type="hidden" value="<%=session.getAttribute("idc")%>">
 	            				<div class="form-floating mb-3">
 					            	<input type="password" class="form-control" id="oldpass" name="oldpass" placeholder="Old password" required>
 									<label for="password">Old password</label>
@@ -38,13 +40,11 @@
 									<label for="password">Confirm new password</label>
 								</div>
 								<p style="color: red;">
-	              					<%
-	              					try {
-	              						if(request.getParameter("error") != null) {
-	              							out.print("Error in resetting your password. Please try again.");
-	                                	}
-	                                } catch(Exception e) {}
-									%>
+								<%
+								if(request.getParameter("error") != null) {
+              						out.print("Error in resetting your password. Please try again.");
+								}
+								%>
 								</p>
 								<hr class="my-4">
 								<div class="d-grid">
@@ -68,7 +68,7 @@
 			var confirmpass = document.getElementById("confirmpass");
         	function validate() {
         		if(newpass.value != confirmpass.value) {
-        			confirmpass.setCustomValidity("Password doesn't match.");
+        			confirmpass.setCustomValidity("Password confirmation failed.");
         			} else {
         				confirmpass.setCustomValidity('');
 	        		}

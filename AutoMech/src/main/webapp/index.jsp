@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
@@ -29,7 +29,7 @@
 				    	</td>
 				    	<td style="padding: 0 50px"></td>
 					    <td style="height:300px;">
-							<a href="sparepartmain.jsp">
+							<a href="#">
 								<button class="btn btn-info head-button-size">
 					            <div style="text-align:center">
 					              <i class="fa fa-wrench fa-5x"></i>

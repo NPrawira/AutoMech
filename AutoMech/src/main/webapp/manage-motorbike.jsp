@@ -1,28 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	String idc = null;
-	if(session.getAttribute("idc") != null) {
-		idc = session.getAttribute("idc").toString();
-	} else {
-		response.sendRedirect("login.jsp");
-	}
-	
-	String id = request.getParameter("manage");
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection con = null;
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	
-	ResultSet rs1 = null;
-	rs1 = stmt.executeQuery("SELECT * FROM motorbikes WHERE motorbike_id="+id);
-	rs1.next();
+String idc = null;
+String name = null;
+if(session.getAttribute("idc") != null) {
+	idc = session.getAttribute("idc").toString();
+	name = session.getAttribute("customer").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+
+String motorbike_id = request.getParameter("manage");
+ResultSet rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE motorbike_id = " + motorbike_id);
+rs.next();
+String type = rs.getString("type");
+String brand = rs.getString("brand");
 %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Manage <%=rs1.getString("license_plate")%> | AutoMech</title>
+		<title>Manage <%out.println(rs.getString("license_plate"));%> | AutoMech</title>
         <jsp:include page="support/head.jsp"></jsp:include>
 	</head>
 	<body>
@@ -63,43 +65,68 @@
 						<div class="card-body p-4 p-sm-5">
 							<h1 class="card-title text-center mb-5 fw-bold fs-5">Manage Motorbike</h1>
 	            			<form action="editMotorbike" method="post" onsubmit="return validate();">
-	            				<input type="hidden" id="motorbike_" name="motorbike_id" value="<%=rs1.getInt("motorbike_id")%>">
+	            				<input type="hidden" id="motorbike_id" name="motorbike_id" value="<%=rs.getInt("motorbike_id")%>">
 	              				<div class="row">
 		              				<div class="form-floating col-md-6 mb-3">
-		                				<input type="text" class="form-control" id="licenseplate" name="licenseplate" placeholder="License plate" value="<%=rs1.getString("license_plate")%>" required>
+		                				<input type="text" class="form-control" id="licenseplate" name="licenseplate" placeholder="License plate" value="<%out.println(rs.getString("license_plate"));%>" required>
 		                				<label for="licenseplate">License plate</label>
 		              				</div>
 		              				<div class="form-floating col-md-6 mb-3">
-						            	<input type="text" class="form-control" id="owner" name="owner" placeholder="Owner" value="<%=rs1.getString("owner")%>" style="background: white;" readonly>
+						            	<input type="text" class="form-control" id="owner" name="owner" placeholder="Owner" value="<%out.println(rs.getString("owner"));%>" style="background: white;" readonly>
 						            	<label for="owner">Owner</label>
 									</div>
 	              				</div>
 	              				<div class="row">
-	              					<div class="form-floating col-md-6 mb-3">
-		              					<input type="text" class="form-control" id="type" name="type" placeholder="Type" value="<%=rs1.getString("type")%>" style="background: white;" readonly>
-			                			<label for="type">Type</label>
-		              				</div>
-		              				<div class="form-floating col-md-6 mb-3">
-		                				<input type="text" class="form-control" id="brand" name="brand" placeholder="Brand" value="<%=rs1.getString("brand")%>" style="background: white;" readonly>
-			                			<label for="brand">Brand</label>
-		              				</div>
-	              				</div>
+									<div class="form-floating col-md-6 mb-3">
+				                		<input type="text" class="form-control" id="model" name="model" placeholder="Model" value="<%out.println(rs.getString("model"));%>" required>
+				                		<label for="model">Model</label>
+									</div>
+				              		<div class="form-floating col-md-6 mb-3">
+				                		<input type="number" class="form-control" id="kilometer" name="kilometer" placeholder="Odometer (km)" value="<%=rs.getInt("kilometer")%>" required>
+				                		<label for="kilometer">Odometer (km)</label>
+									</div>
+			              		</div>
 	              				<div class="row">
 	              					<div class="form-floating col-md-6 mb-3">
-		                				<input type="text" class="form-control" id="model" name="model" placeholder="Model" value="<%=rs1.getString("model")%>" required>
-		                				<label for="model">Model</label>
+		                				<select class="form-control" id="brand" name="brand" required>
+		                					<option disabled="disabled" selected="selected">Select brand...</option>
+		                					<%
+		                					ResultSet rs1 = null;
+		                					rs1 = stmt.executeQuery("SELECT * FROM motorbike_brands ORDER BY name ASC");
+		                					while(rs1.next()) {	
+			                				%>
+			                				<option value="<%= rs1.getString("name") %>"><%= rs1.getString("name") %></option>
+			                				<% } %>
+		                				</select>
+		                				<script type="text/javascript">
+		                					document.getElementById("brand").value = <%out.print("'" + brand + "'"); %>;
+			                            </script>
+			                            <label for="brand">Brand</label>
 		              				</div>
-		              				<div class="form-floating col-md-6 mb-3">
-		                				<input type="number" class="form-control" id="kilometer" name="kilometer" placeholder="Odometer (km)" value="<%=rs1.getString("kilometer")%>" required>
-		                				<label for="kilometer">Odometer (km)</label>
+	              					<div class="form-floating col-md-6 mb-3">
+			                			<select class="form-control" id="type" name="type" required>
+		                					<option disabled="disabled" selected="selected">Select type...</option>
+		                					<option value="Cruiser">Cruiser</option>
+		                					<option value="Cub">Cub</option>
+		                					<option value="Off-road">Off-road</option>
+		                					<option value="Roadster">Roadster</option>
+		                					<option value="Scooter">Scooter</option>
+		                					<option value="Sport">Sport</option>
+		                					<option value="Touring">Touring</option>
+		                					<option value="Other">Other</option>
+		                				</select>
+		                				<script type="text/javascript">
+		                					document.getElementById("type").value = <%out.print("'" + type + "'"); %>;
+			                            </script>
+			                            <label for="type">Type</label>
 		              				</div>
 	              				</div>
 	              				<div class="column">
 	              					<p style="color: red;">
 	              					<%
-										if(request.getParameter("error") != null) {
-											out.print("An error occurred. Please try again.");
-										}
+									if(request.getParameter("error") != null) {
+										out.print("An error occurred. Please try again.");
+									}
 									%>
 	              					</p>
 	              				</div>

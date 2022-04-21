@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +99,7 @@
                 <div class="container-fluid">
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">
-                		Add New Motorbike Brand
+                		Add Motorbike Brand
 					</h1>
                 	<div class="container col-md-5">
 						<form action="createBrand">
@@ -99,7 +107,7 @@
 								<div class="card-body">
 									<fieldset class="form-group">
 										<label>Name</label>
-										<input type="text" class="form-control" id="name" name="name" required>
+										<input type="text" class="form-control" id="name" name="name" required maxlength="20">
 									</fieldset>
 									<input class="btn btn-primary" type="submit" value="Add brand">
 								</div>

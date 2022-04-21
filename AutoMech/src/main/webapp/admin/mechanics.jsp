@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,13 +113,14 @@
                 		</div>
                 		<div class="card-body">
 	                		<div class="text-left">
-								<a href="mechanics-form.jsp" type="button" class="btn btn-success btn-user">Add new mechanic</a>
+								<a href="mechanics-add.jsp" type="button" class="btn btn-success btn-user">Add new mechanic</a>
 							</div>
 							<hr>
                 			<div class="table-responsive">
-                				<table id="tb_matakuliah" class="table table-bordered" width="100%" cellspacing="0">
+                				<table class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
+	                						<td>Code</td>
 	                						<td>Name</td>
 	                						<td>Specialization</td>
 	                						<td>Action</td>
@@ -123,11 +132,12 @@
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString(2)); %></td>
-											<td><% out.println(rs.getString(3)); %></td>
+											<td><% out.println(rs.getString("mechanic_code")); %></td>
+											<td><% out.println(rs.getString("name")); %></td>
+											<td><% out.println(rs.getString("specialization")); %></td>
 											<td style="text-align: center;">
-												<form action="mechanics-form.jsp" method="post">
-													<input type="hidden" value="<% out.println(rs.getString(1)); %>" name="mechanic">
+												<form action="mechanics-edit.jsp" method="post">
+													<input type="hidden" value="<% out.println(rs.getInt("mechanic_id")); %>" name="mechanic">
 				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
 				        						</form>
 											</td>

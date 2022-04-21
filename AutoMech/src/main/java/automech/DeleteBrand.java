@@ -24,17 +24,17 @@ public class DeleteBrand extends HttpServlet {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 			java.sql.Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM motorbike_brands WHERE motorbike_brand_id ="+id);
+			stmt.executeUpdate("DELETE FROM motorbike_brands WHERE motorbike_brand_id =" + id);
 			getServletContext().getRequestDispatcher("/admin/motorbike-brands.jsp").forward(req, resp);
 		} catch (SQLException e) {
 			System.out.print(e);
 		} finally {
 			if(con != null) {
-				try {
-	            	con.close();
-				} catch (SQLException e) {
-	            	e.printStackTrace();
-				}
+				 try {
+					 con.close();
+				 } catch (SQLException e) {
+	             	e.printStackTrace();
+				 }
 			}
 		}
 	}

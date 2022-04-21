@@ -19,24 +19,22 @@ public class ChangePassword extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int id = Integer.parseInt(req.getParameter("id"));		
-		String oldpass,newpass;	
+		int id = Integer.parseInt(req.getParameter("id"));
+		String oldpass = req.getParameter("oldpass");
+		String newpass = req.getParameter("newpass");
 		
-		oldpass = req.getParameter("oldpass");
-		newpass = req.getParameter("newpass");
-		
-		PreparedStatement pstmt = null; 
+		PreparedStatement pstmt = null;
 		Connection con = null;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 			java.sql.Statement stmt = con.createStatement();
 			ResultSet rs = null;
-			rs = stmt.executeQuery("SELECT password FROM `customers` WHERE customer_id ="+id); 
+			rs = stmt.executeQuery("SELECT password FROM customers WHERE customer_id = " + id);
 			rs.next();
 			String pass = rs.getString(1);
 			if(oldpass.equals(pass)) {
-				pstmt = con.prepareStatement("UPDATE `customers` SET `password`=? WHERE `customer_id`="+id);
+				pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE customer_id = " + id);
 				pstmt.setString(1, newpass);
 				pstmt.executeUpdate();
 				getServletContext().getRequestDispatcher("/myprofile.jsp?success=1").forward(req, resp);

@@ -25,8 +25,9 @@ public class CreateCustomer extends HttpServlet {
 		String address = req.getParameter("address");
 		int postal_code = Integer.parseInt(req.getParameter("postal_code"));
 		
-		PreparedStatement pstmt = null;
 		Connection con = null;
+		PreparedStatement pstmt = null;
+		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
@@ -45,13 +46,12 @@ public class CreateCustomer extends HttpServlet {
 			System.out.println(e);
 		} finally {
 			if(con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					System.out.println(e);
-				}
+				 try {
+					 con.close();
+				 } catch (SQLException e) {
+	             	e.printStackTrace();
+				 }
 			}
 		}
 	}
-	
 }

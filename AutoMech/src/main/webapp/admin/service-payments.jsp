@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<!-- 
+String username = null;
+if(session.getAttribute("username") != null) {
+	username = session.getAttribute("username").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+-->
 <%
-	Class.forName("com.mysql.cj.jdbc.Driver");	
-	Connection con = null; 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	ResultSet rs = null;
+Class.forName("com.mysql.cj.jdbc.Driver");	
+Connection con = null; 
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
+ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,15 +112,11 @@
                 			<h6 class="m-0 font-weight-bold text-primary">Service Payments List</h6>
                 		</div>
                 		<div class="card-body">
-                			<div class="text-left">
-								<a href="service-payments-form.jsp" class="btn btn-success">Add new payment</a>
-							</div>
-							<hr>
-                			<div class="table-responsive">
-                				<table id="tb_matakuliah" class="table table-bordered" width="100%" cellspacing="0">
+							<div class="table-responsive">
+                				<table id="" class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
-	                						<td>Payment ID</td>
+	                						<td>Payment no</td>
 	                						<td>Date</td>
 	                						<td>Service tag</td>
 	                						<td>Service type</td>
@@ -123,21 +127,33 @@
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM service_payments");
-		                        		while(rs.next()) {
+	                				rs = stmt.executeQuery("SELECT * FROM service_payments");
+		                        	while(rs.next()) {
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString(1)); %></td>
-											<td><% out.println(rs.getString(2)); %></td>
-											<td><% out.println(rs.getString(3)); %></td>
-											<td><% out.println(rs.getString(4)); %></td>
-											<td><% out.println(rs.getString(5)); %></td>
-											<td><% out.println(rs.getString(6)); %></td>
-											<td><% out.println(rs.getString(7)); %></td>
+											<td><% out.println(rs.getString("payment_no")); %></td>
+											<% if(rs.getString("date") != null) { %>
+									        <td><%out.println("date");%></td>
+									        <% } else { %>
+											<td>TBD</td>
+											<% } %>
+											<td><% out.println(rs.getString("service_tag")); %></td>
+											<td><% out.println(rs.getString("service_type")); %></td>
+											<% if(rs.getString("amount") != null) { %>
+									        <td><%out.println("amount");%></td>
+									        <% } else { %>
+											<td>TBD</td>
+											<% } %>
+											<% if(rs.getString("method") != null) { %>
+									        <td><%out.println("method");%></td>
+									        <% } else { %>
+											<td>TBD</td>
+											<% } %>
+											<td><% out.println(rs.getString("status")); %></td>
 											<td style="text-align: center;">
 												<form action="service-payments-form.jsp" method="post">
-													<input type="hidden" value="<% out.println(rs.getString(1)); %>" name="service_payment">
+													<input type="hidden" value="<% out.println(rs.getInt("service_payment_id")); %>" name="service_payment">
 				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
 				        						</form>
 											</td>

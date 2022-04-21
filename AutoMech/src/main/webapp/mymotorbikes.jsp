@@ -1,23 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	String id = null;
-	String name = null;
-	if(session.getAttribute("idc") != null) {
-		id = session.getAttribute("idc").toString();
-		name = session.getAttribute("customer").toString();
-	} else {
-		response.sendRedirect("login.jsp");
-	}
-	
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection con = null;
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-	Statement stmt = con.createStatement();
-	
-	ResultSet rs = null;
-	rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner IN(SELECT name FROM customers WHERE customer_id = "+id+")");
+String id = null;
+String name = null;
+if(session.getAttribute("idc") != null) {
+	id = session.getAttribute("idc").toString();
+	name = session.getAttribute("customer").toString();
+} else {
+	response.sendRedirect("login.jsp");
+}
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = null;
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Statement stmt = con.createStatement();
 %>
 <!DOCTYPE html>
 <html>
@@ -57,14 +54,13 @@
 			</div>
 		</nav>
         <div class="container">
-        	<br>
-			<br>
+        	<br><br>
 			<h2 class="d-flex justify-content-center">Motorbikes List</h2>
 			<br>
 			<form action="searchmotorbike.jsp" method="get" name="search" onsubmit="return validate();">
 				<div class="row">
 					<div class='col-md-10 mb-3'>
-						<input class="form-control" type="text" placeholder="Search motorbike license plate..." aria-label="Search" name="searchmotorbike">    
+						<input class="form-control" type="text" placeholder="Search motorbike..." aria-label="Search" id="motorbike" name="motorbike">    
 					</div>
 					<div class='col-md-1 mb-3'>
 						<input type="submit" class="btn btn-info" value="Search">
@@ -85,53 +81,59 @@
 	                	</tr>
 					</thead>
            			<tbody>
-           			<%
-           			if(!rs.isBeforeFirst()) {
-           			%>
-           				<tr style="text-align: center; background-color: gray; color: white;"><td colspan="3">No motorbikes.</td></tr>
-           			<%
-           			} else {
-           				while(rs.next()) {
-					%>	 
+	           			<%
+	           			ResultSet rs = null;
+	           			rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '"+ name +"'");
+	           			if(!rs.isBeforeFirst()) {
+	                   	%>
+                   		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="3">No motorbikes.</td></tr>
+                   		<%
+                   		} else {
+                   			while(rs.next()) {
+						%>
                     	<tr>
-                       		<td><%out.println(rs.getString(2));%></td>
-        					<td><%out.println(rs.getString(5));%> <%out.println(rs.getString(6));%> <%out.println(rs.getString(4));%></td>
-            				<td style="text-align: center">
-            					<form action="manage-motorbike.jsp" method="post" style="display: inline;">
-            						<input type="hidden" value="<%out.println(rs.getInt(1));%>" name="manage">
-            				        <input type="submit" class="btn btn-warning btn-user" value="Manage">
-            					</form>
-            					<form action="new-service.jsp" method="post" style="display: inline;" onsubmit="return confirm('Proceed to service this motorbike?');">
-            						<input type="hidden" value="<%out.println(rs.getString(2));%>" name="proceed">
-            						<input type="submit" class="btn btn-success btn-user" value="Proceed service">	        
-            					</form>
-            				</td>
-            			</tr>
-                   	<%
-                   		}
-           			} rs.close();
-           			%>
+                        	<td><%out.println(rs.getString("license_plate"));%></td>
+                			<td><%out.println(rs.getString("brand"));%> <%out.println(rs.getString("model"));%> <%out.println(rs.getString("type"));%></td>
+                    		<td style="text-align: center">
+                    			<form action="manage-motorbike.jsp" method="post" style="display: inline;">
+                    				<input type="hidden" value="<%out.println(rs.getInt("motorbike_id"));%>" name="manage">
+                    				<input type="submit" class="btn btn-warning btn-user" value="Manage motorbike">
+                    			</form>
+                    			&nbsp;or&nbsp;
+                    			<form action="new-service.jsp" method="post" style="display: inline;" onsubmit="return confirm('Proceed to service this motorbike?');">
+                    				<input type="hidden" value="<%out.println(rs.getString("license_plate"));%>" name="proceed">
+                    				<input type="submit" class="btn btn-success btn-user" value="Proceed to service">	        
+								</form>
+                    		</td>
+                    	</tr>
+						<%
+							}
+	                   	}
+	           			%>
 					</tbody>
                 </table>
 			</div>
 			<div class="d-flex justify-content-center links">I have a new motorbike:&nbsp;<a href="new-motorbike.jsp">Add new motorbike</a></div>
 			<br>
         </div>
-        <jsp:include page="support/footer.jsp"></jsp:include>
+        <br>
+        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
+			<div class="container">
+				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
+			</div>
+		</footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
         <script type="text/javascript">
 	        function validate() {
-	    		if (search.value == null || search.value == "") {
-	    			search.setCustomValidity("Enter your search.");
-	    			} else {
-	    				search.setCustomValidity('');
-	        		}
+	        	var x = document.forms["search"]["motorbike"].value;
+	        	if (x == null || x == "") {
+	        		alert("Enter your search!");
+	        		return false;
+	            }
 	    	}
-			search.onchange = validate;
-			search.onkeyup = validate;
         </script>
     </body>
 </html>

@@ -26,12 +26,13 @@ public class EditMotorbike extends HttpServlet {
 		String model = req.getParameter("model");
 		int kilometer = Integer.parseInt(req.getParameter("kilometer"));
 		
-		PreparedStatement pstmt = null;
 		Connection con = null;
+		PreparedStatement pstmt = null;
+		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE `motorbikes` SET `motorbike_id`=?, `license_plate`=?, `owner`=?, `type`=?, `brand`=?, `model`=?, `kilometer`=? WHERE `motorbike_id`="+id);
+			pstmt = con.prepareStatement("UPDATE motorbikes SET motorbike_id = ?, license_plate = ?, owner = ?, type = ?, brand = ?, model = ?, kilometer = ? WHERE motorbike_id = " + id);
 			pstmt.setInt(1, id);
 			pstmt.setString(2, licenseplate);
 			pstmt.setString(3, owner);
@@ -47,11 +48,11 @@ public class EditMotorbike extends HttpServlet {
 			System.out.println(e);
 		} finally {
 			if(con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					System.out.println(e);
-				}
+				 try {
+					 con.close();
+				 } catch (SQLException e) {
+	             	e.printStackTrace();
+				 }
 			}
 		}
 	}
