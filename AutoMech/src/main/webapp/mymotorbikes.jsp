@@ -12,8 +12,7 @@ if(session.getAttribute("idc") != null) {
 }
 
 Class.forName("com.mysql.cj.jdbc.Driver");
-Connection con = null;
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
 %>
 <!DOCTYPE html>
@@ -71,6 +70,15 @@ Statement stmt = con.createStatement();
 				</div>
 			</form>
 			<hr>
+			<div class="column">
+				<p style="color: red;">
+	            <%
+				if(request.getParameter("limit") != null) {
+	            	out.print("Selected date for your service request is already full. Please redo the new service request.");
+	            }
+				%>
+				</p>
+			</div>
 			<div class="table-responsive">
 				<table id="tblMotorbike" class="table table-bordered">
                 	<thead>
@@ -90,18 +98,23 @@ Statement stmt = con.createStatement();
                    		<%
                    		} else {
                    			while(rs.next()) {
+                   				int motorbike_id = rs.getInt("motorbike_id");
+                   				String license_plate = rs.getString("license_plate");
+                   				String type = rs.getString("type");
+                   				String brand = rs.getString("brand");
+                   				String model = rs.getString("model");
 						%>
                     	<tr>
-                        	<td><%out.println(rs.getString("license_plate"));%></td>
-                			<td><%out.println(rs.getString("brand"));%> <%out.println(rs.getString("model"));%> <%out.println(rs.getString("type"));%></td>
-                    		<td style="text-align: center">
+                        	<td><%out.print(license_plate);%></td>
+                			<td><%out.print(brand);%> <%out.print(model);%> <%out.print(type);%></td>
+                    		<td class="text-center">
                     			<form action="manage-motorbike.jsp" method="post" style="display: inline;">
-                    				<input type="hidden" value="<%out.println(rs.getInt("motorbike_id"));%>" name="manage">
+                    				<input type="hidden" value="<%out.print(motorbike_id);%>" name="manage">
                     				<input type="submit" class="btn btn-warning btn-user" value="Manage motorbike">
                     			</form>
                     			&nbsp;or&nbsp;
                     			<form action="new-service.jsp" method="post" style="display: inline;" onsubmit="return confirm('Proceed to service this motorbike?');">
-                    				<input type="hidden" value="<%out.println(rs.getString("license_plate"));%>" name="proceed">
+                    				<input type="hidden" value="<%out.print(license_plate);%>" name="proceed">
                     				<input type="submit" class="btn btn-success btn-user" value="Proceed to service">	        
 								</form>
                     		</td>

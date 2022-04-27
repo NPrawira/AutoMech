@@ -48,24 +48,24 @@ try {
 					<div class="card border-0 shadow rounded-3 my-5">
 						<div class="card-body p-4 p-sm-5">
 							<h1 class="card-title text-center mb-5 fw-bold fs-5">Reset Password</h1>
-	            			<form method="post">
+	            			<form method="post" onsubmit="return validate();">
 	              				<div class="row">
 		              				<div class="form-floating col-md-6 mb-3">
-		                				<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+		                				<input type="email" class="form-control" id="email" name="email" placeholder="Email" required maxlength="30">
 		                				<label for="email">Email</label>
 		              				</div>
 		              				<div class="form-floating col-md-6 mb-3">
-						            	<input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="Phone number" required>
+						            	<input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="Phone number" required maxlength="20">
 						            	<label for="phone_no">Phone number</label>
 									</div>
 	              				</div>
 	              				<div class="row">
 	              					<div class="form-floating col-md-6 mb-3">
-						            	<input type="password" class="form-control" id="newpassword" name="newpassword" placeholder="Password" required>
+						            	<input type="password" class="form-control" id="newpass" name="newpass" placeholder="New password" required maxlength="20">
 						            	<label for="password">New password</label>
 									</div>
 		              				<div class="form-floating col-md-6 mb-3">
-						            	<input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" required>
+						            	<input type="password" class="form-control" id="confirmpass" name="confirmpass" placeholder="Confirm new password" required maxlength="20">
 						            	<label for="password">Confirm new password</label>
 									</div>
 	              				</div>
@@ -111,5 +111,37 @@ try {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script type="text/javascript">
+	        var email = document.getElementById("email");
+			var email_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			
+			var phone_no = document.getElementById("phone_no");
+			var phone_pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+			
+        	var newpass = document.getElementById("newpass");
+			var confirmpass = document.getElementById("confirmpass");
+			
+        	function validate() {
+        		if(email.value.match(email_pattern)) {
+    				email.setCustomValidity("");
+    			} else {
+    				email.setCustomValidity("Enter a correct email format.");
+    			}
+        		
+        		if(phone_no.value.match(phone_pattern)) {
+    				phone_no.setCustomValidity("");
+    			} else {
+    				phone_no.setCustomValidity("Enter a correct phone number format.");
+    			}
+        		
+				if(newpass.value != confirmpass.value) {
+					confirmpass.setCustomValidity("Password confirmation failed.");
+				} else {
+					confirmpass.setCustomValidity("");
+				}
+        	}
+			newpass.onchange = validate;
+			confirmpass.onkeyup = validate;
+		</script>
 	</body>
 </html>

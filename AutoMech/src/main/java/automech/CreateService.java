@@ -42,7 +42,7 @@ public class CreateService extends HttpServlet {
 			int check_date = date_avail.getInt(1);
 			
 			if(check_date >= 5) {
-				getServletContext().getRequestDispatcher("/new-service.jsp?limit=1").forward(req, resp);
+				getServletContext().getRequestDispatcher("/mymotorbikes.jsp?limit=1").forward(req, resp);
 			} else {
 				pstmt1 = con.prepareStatement("INSERT INTO services(service_tag, motorbike, customer, start_date, finish_date, service_type, mechanic, customer_notes, mechanic_notes, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				pstmt1.setString(1, service_tag);
@@ -53,7 +53,7 @@ public class CreateService extends HttpServlet {
 				pstmt1.setString(6, service_type);
 				pstmt1.setString(7, null);
 				pstmt1.setString(8, customer_notes);
-				pstmt1.setString(9, null);
+				pstmt1.setString(9, "");
 				pstmt1.setString(10, "Requested");
 				pstmt1.executeUpdate();
 				
@@ -63,8 +63,8 @@ public class CreateService extends HttpServlet {
 				pstmt2.setString(3, null);
 				pstmt2.setString(4, service_tag);
 				pstmt2.setString(5, service_type);
-				pstmt2.setString(6, null);
-				pstmt2.setString(7, null);
+				pstmt2.setInt(6, 0);
+				pstmt2.setString(7, "");
 				pstmt2.setString(8, "Waiting");
 				pstmt2.executeUpdate();
 				

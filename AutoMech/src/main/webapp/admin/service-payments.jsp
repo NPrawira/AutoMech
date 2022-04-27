@@ -11,10 +11,8 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");	
-Connection con = null; 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,42 +116,30 @@ ResultSet rs = null;
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
 	                						<td>Payment no</td>
 	                						<td>Date</td>
-	                						<td>Service tag</td>
-	                						<td>Service type</td>
-	                						<td>Amount</td>
-	                						<td>Method</td>
 	                						<td>Status</td>
 	                						<td>Action</td>
 	                					</tr>
 									</thead>
 									<%
-	                				rs = stmt.executeQuery("SELECT * FROM service_payments");
+	                				ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments");
 		                        	while(rs.next()) {
+		                        		int service_payment_id = rs.getInt("service_payment_id");
+		                        		String payment_no = rs.getString("payment_no");
+		                        		Date date = rs.getDate("date");
+		                        		String status = rs.getString("status");
 	                        		%>
                 					<tbody>
                 						<tr>
-											<td><% out.println(rs.getString("payment_no")); %></td>
-											<% if(rs.getString("date") != null) { %>
-									        <td><%out.println("date");%></td>
-									        <% } else { %>
+											<td><% out.print(payment_no); %></td>
+											<% if(date != null) { %>
+											<td><% out.print(date); %></td>
+											<% } else { %>
 											<td>TBD</td>
 											<% } %>
-											<td><% out.println(rs.getString("service_tag")); %></td>
-											<td><% out.println(rs.getString("service_type")); %></td>
-											<% if(rs.getString("amount") != null) { %>
-									        <td><%out.println("amount");%></td>
-									        <% } else { %>
-											<td>TBD</td>
-											<% } %>
-											<% if(rs.getString("method") != null) { %>
-									        <td><%out.println("method");%></td>
-									        <% } else { %>
-											<td>TBD</td>
-											<% } %>
-											<td><% out.println(rs.getString("status")); %></td>
+											<td><% out.print(status); %></td>
 											<td style="text-align: center;">
 												<form action="service-payments-form.jsp" method="post">
-													<input type="hidden" value="<% out.println(rs.getInt("service_payment_id")); %>" name="service_payment">
+													<input type="hidden" value="<% out.print(service_payment_id); %>" name="service_payment">
 				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
 				        						</form>
 											</td>

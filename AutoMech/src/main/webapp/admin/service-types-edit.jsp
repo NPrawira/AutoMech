@@ -15,10 +15,7 @@ Connection con = null;
 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
 	
-String id = request.getParameter("service-type");
-ResultSet rs = null;
-rs = stmt.executeQuery("SELECT * FROM `service_types` WHERE `service_type_id` ='"+id+"'");
-rs.next();
+String service_type_id = request.getParameter("service-type");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,26 +109,31 @@ rs.next();
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">Manage service type</h1>
                 	<div class="container col-md-5">
-                		<% try { %>
-						<form action="editServiceType">
+						<form action="editServiceType" method="post" onsubmit="return confirm('Update this motorbike service type?');">
 							<div class="card">
 								<div class="card-body">
-									<input type="hidden" id="service_type_id" name="service_type_id" value="<%=rs.getInt("service_type_id")%>">
+									<%
+									ResultSet rs = stmt.executeQuery("SELECT * FROM service_types WHERE service_type_id ='" + service_type_id + "'");
+									while(rs.next()) {
+										int id = rs.getInt("service_type_id");
+										String service_code = rs.getString("service_code");
+										String name = rs.getString("name");
+										int price = rs.getInt("price");
+									%>
+									<input type="hidden" id="service_type_id" name="service_type_id" value="<%out.print(id);%>">
 									<fieldset class="form-group">
 										<label>Service code</label>
-										<input type="text" class="form-control" id="service_code" name="service_code" value="<%=rs.getString("service_code")%>" style="background: white;" readonly>
+										<input type="text" class="form-control" id="service_code" name="service_code" value="<%out.print(service_code);%>" style="background: white;" readonly>
 										<label>Name</label>
-										<input type="text" class="form-control" id="name" name="name" value="<%=rs.getString("name")%>" maxlength="30" required>
+										<input type="text" class="form-control" id="name" name="name" value="<%out.print(name);%>" maxlength="30" required>
 										<label>Price (RM)</label>
-										<input type="number" class="form-control" id="price" name="price" value="<%=rs.getInt("price")%>" required>
+										<input type="number" class="form-control" id="price" name="price" value="<%out.print(price);%>" required>
 									</fieldset>
 									<input class="btn btn-primary" type="submit" value="Save">
+									<% } %>
 								</div>
 							</div>
 						</form>
-						<%
-						} catch(Exception e) {}
-						%>
 					</div>
                 </div>
             </div>

@@ -11,10 +11,8 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");	
-Connection con = null; 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +111,7 @@ ResultSet rs = null;
                 		</div>
                 		<div class="card-body">
                 			<div class="table-responsive">
-                				<table id="" class="table table-bordered" width="100%" cellspacing="0">
+                				<table class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
 	                						<td>Service tag</td>
@@ -125,7 +123,7 @@ ResultSet rs = null;
 	                					</tr>
 									</thead>
 									<%
-	                				rs = stmt.executeQuery("SELECT * FROM services");
+	                				ResultSet rs = stmt.executeQuery("SELECT * FROM services");
 		                        	while(rs.next()) {
 	                        		%>
                 					<tbody>

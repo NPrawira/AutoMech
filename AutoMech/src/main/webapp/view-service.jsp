@@ -62,16 +62,19 @@ rs.next();
 				<div class="col-sm-6 col-md-6 col-lg-6 mx-auto">
 					<div class="card border-0 shadow rounded-3 my-5">
 						<div class="card-header p-4 p-sm-4 bg-primary">
-							<h5 class="pull-left text-white" style="display: inline; text-decoration: underline;"><%out.println(rs.getString("service_tag"));%></h5>
-							<% if(rs.getString("status").equals("Requested")) { %>
-							<h6 class="pull-right text-uppercase bg-white" style="display: inline; color: gray; padding: 5px"><%out.println(rs.getString("status"));%></h6>
-							<% } else if(rs.getString("status").equals("Cancelled")) { %>
-							<h6 class="pull-right text-uppercase" style="display: inline; background-color: #FFCCBB; color: red; padding: 5px"><%out.println(rs.getString("status"));%></h6>
-							<% } else if(rs.getString("status").equals("In service")) { %>
-							<h6 class="pull-right text-uppercase" style="display: inline; background-color: #8B4000; color: orange; padding: 5px"><%out.println(rs.getString("status"));%></h6>
-							<% } else if(rs.getString("status").equals("Finished")) { %>
-							<h6 class="pull-right text-uppercase" style="display: inline; background-color: #90EE90; color: green; padding: 5px"><%out.println(rs.getString("status"));%></h6>
-							<% } %>
+							<h5 class="pull-left text-white" style="display: inline;">Service tag 
+							<%out.println(rs.getString("service_tag"));%></h5>
+							<form name="service_status">
+								<% if(rs.getString("status").equals("Requested")) { %>
+								<h6 class="pull-right text-uppercase bg-white" style="display: inline; color: gray; padding: 5px"><%out.println(rs.getString("status"));%></h6>
+								<% } else if(rs.getString("status").equals("Cancelled")) { %>
+								<h6 class="pull-right text-uppercase" style="display: inline; background-color: red; color: #FFCCBB; padding: 5px"><%out.println(rs.getString("status"));%></h6>
+								<% } else if(rs.getString("status").equals("In service")) { %>
+								<h6 class="pull-right text-uppercase" style="display: inline; background-color: orange; color: #FFFF00; padding: 5px"><%out.println(rs.getString("status"));%></h6>
+								<% } else if(rs.getString("status").equals("Finished")) { %>
+								<h6 class="pull-right text-uppercase" style="display: inline; background-color: green; color: #90EE90; padding: 5px"><%out.println(rs.getString("status"));%></h6>
+								<% } %>
+							</form>
 						</div>
 						<div class="card-body p-3 p-sm-3">
 	            			<table class="table table-responsive table-borderless table-sm">
@@ -107,12 +110,20 @@ rs.next();
 								    <% } %>
 								</tr>
 								<tr>
-								    <% if(rs.getString("mechanic_notes") != null && rs.getString("status") != "Cancelled") { %>
+								    <% if(!rs.getString("mechanic_notes").equals("") && rs.getString("status") != "Cancelled") { %>
 								    <td><h6>Mechanic notes</h6></td>
 								    <td><%out.println(rs.getString("mechanic_notes"));%></td>
 								    <% } %>
 								</tr>
 							</table>
+							<% if(rs.getString("status").equals("Requested")) { %>
+							<div class="text-center">
+								<form action="cancelService" method="post" onsubmit="return confirm('Do you want to cancel this service request?');">
+									<input type="hidden" value="<% out.println(rs.getInt("service_id")); %>" name="cancel_service">
+					        		<input type="submit" class="btn btn-danger btn-user" value="Cancel service request">
+								</form>
+							</div>
+							<% } %>
 	          			</div>
 	        		</div>
 	      		</div>

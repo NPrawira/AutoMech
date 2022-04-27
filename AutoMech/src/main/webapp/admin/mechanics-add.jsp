@@ -101,7 +101,7 @@ if(session.getAttribute("username") != null) {
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">Add Mechanic</h1>
                 	<div class="container col-md-5">
-						<form action="createMechanic">
+						<form action="createMechanic" method="post" onsubmit="return confirm('Add this new mechanic?');">
 							<div class="card">
 								<div class="card-body">
 									<fieldset class="form-group">
@@ -120,8 +120,7 @@ if(session.getAttribute("username") != null) {
 		                					<option value="Brake">Brake</option>
 		                					<option value="Electric">Electric</option>
 		                					<option value="Engine">Engine</option>
-		                					<option value="Paint">Paint</option>
-		                					<option value="Transmission">Transmission</option>
+		                					<option value="Gear">Gear</option>
 		                				</select>
 									</fieldset>
 									<input class="btn btn-primary" type="submit" value="Add mechanic">

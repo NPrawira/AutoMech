@@ -11,10 +11,8 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");	
-Connection con = null; 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +111,9 @@ ResultSet rs = null;
                 		</div>
                 		<div class="card-body">
 	                		<div class="text-left">
-								<a href="mechanics-add.jsp" type="button" class="btn btn-success btn-user">Add new mechanic</a>
+								<a href="mechanics-add.jsp" class="btn btn-success btn-user">
+								    <i class="fa fa-plus"></i>&nbsp;&nbsp;New mechanic
+								</a>
 							</div>
 							<hr>
                 			<div class="table-responsive">
@@ -127,7 +127,7 @@ ResultSet rs = null;
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM mechanics");
+	                					ResultSet rs = stmt.executeQuery("SELECT * FROM mechanics");
 		                        		while(rs.next()) {
 	                        		%>
                 					<tbody>
@@ -138,7 +138,9 @@ ResultSet rs = null;
 											<td style="text-align: center;">
 												<form action="mechanics-edit.jsp" method="post">
 													<input type="hidden" value="<% out.println(rs.getInt("mechanic_id")); %>" name="mechanic">
-				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
+				        							<button class="btn btn-warning btn-user" type="submit">
+													    <i class="fa fa-file"></i>&nbsp;&nbsp;Manage
+													</button>
 				        						</form>
 											</td>
 										</tr>

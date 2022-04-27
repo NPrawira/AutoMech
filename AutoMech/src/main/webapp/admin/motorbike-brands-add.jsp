@@ -102,7 +102,7 @@ if(session.getAttribute("username") != null) {
                 		Add Motorbike Brand
 					</h1>
                 	<div class="container col-md-5">
-						<form action="createBrand">
+						<form action="createBrand" method="post" onsubmit="return confirm('Add this motorbike brand?');">
 							<div class="card">
 								<div class="card-body">
 									<fieldset class="form-group">

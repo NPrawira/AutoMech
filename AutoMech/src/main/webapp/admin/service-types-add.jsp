@@ -101,7 +101,7 @@ if(session.getAttribute("username") != null) {
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">Add service type</h1>
                 	<div class="container col-md-5">
-						<form action="createServiceType">
+						<form action="createServiceType" method="post" onsubmit="return confirm('Add this new motorbike service type?');">
 							<div class="card">
 								<div class="card-body">
 									<fieldset class="form-group">

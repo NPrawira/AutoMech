@@ -11,13 +11,11 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");
-Connection con = null;
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
 	
-String id = request.getParameter("brand");
-ResultSet rs = null;
-rs = stmt.executeQuery("SELECT * FROM `motorbike_brands` WHERE `motorbike_brand_id` ='"+id+"'");
+String brand_id = request.getParameter("brand");
+ResultSet rs = stmt.executeQuery("SELECT * FROM `motorbike_brands` WHERE `motorbike_brand_id` ='" + brand_id + "'");
 rs.next();
 %>
 <!DOCTYPE html>
@@ -114,8 +112,7 @@ rs.next();
                 		Edit Motorbike Brand
 					</h1>
                 	<div class="container col-md-5">
-                		<% try { %>
-						<form action="editBrand">
+						<form action="editBrand" method="post" onsubmit="return confirm('Update this motorbike brand?');">
 							<div class="card">
 								<div class="card-body">
 									<input type="hidden" id="brand_id" name="brand_id" value="<%=rs.getInt("motorbike_brand_id")%>">
@@ -127,9 +124,6 @@ rs.next();
 								</div>
 							</div>
 						</form>
-						<%
-						} catch(Exception e) {}
-						%>
 					</div>
                 </div>
             </div>

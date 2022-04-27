@@ -116,7 +116,7 @@ String specialization = rs.getString("specialization");
 					</h1>
                 	<div class="container col-md-5">
                 		<% try { %>
-						<form action="editMechanic">
+						<form action="editMechanic" method="post" onsubmit="return confirm('Update this mechanic data?');">
 							<div class="card">
 								<div class="card-body">
 									<input type="hidden" id="mechanic_id" name="mechanic_id" value="<%=rs.getInt("mechanic_id")%>">
@@ -133,7 +133,7 @@ String specialization = rs.getString("specialization");
 		                					<option value="Electric">Electric</option>
 		                					<option value="Engine">Engine</option>
 		                					<option value="Paint">Paint</option>
-		                					<option value="Transmission">Transmission</option>
+		                					<option value="Gear">Gear</option>
 		                				</select>
 		                				<script type="text/javascript">
 		                					document.getElementById("specialization").value = <%out.print("'"+specialization+"'"); %>;

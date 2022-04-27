@@ -11,10 +11,8 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");	
-Connection con = null; 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +111,9 @@ ResultSet rs = null;
                 		</div>
                 		<div class="card-body">
                 			<div class="text-left">
-								<a href="service-types-add.jsp" type="button" class="btn btn-success btn-user">Add service type</a>
+								<a href="service-types-add.jsp" class="btn btn-success btn-user">
+								    <i class="fa fa-plus"></i>&nbsp;&nbsp;New service type
+								</a>
 							</div>
 							<hr>
                 			<div class="table-responsive">
@@ -127,8 +127,8 @@ ResultSet rs = null;
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM service_types ORDER BY name ASC");
-		                        		while(rs.next()) {
+	                				ResultSet rs = stmt.executeQuery("SELECT * FROM service_types ORDER BY name ASC");
+		                        	while(rs.next()) {
 	                        		%>
                 					<tbody>
                 						<tr>
@@ -138,11 +138,15 @@ ResultSet rs = null;
 											<td style="text-align: center;">
 												<form action="service-types-edit.jsp" method="post" style="display: inline;">
 													<input type="hidden" value="<% out.println(rs.getInt("service_type_id")); %>" name="service-type">
-				        							<input type="submit" class="btn btn-warning" value="Manage">
+				        							<button class="btn btn-warning btn-user" type="submit">
+													    <i class="fa fa-file"></i>&nbsp;&nbsp;Manage
+													</button>
 				        						</form>
 									        	<form action="deleteServiceType" method="post" style="display: inline;" onsubmit="return confirm('Do you want to delete this service type?');">
 											        <input type="hidden" value="<% out.print(rs.getInt("service_type_id")); %>" name="service-type">
-											        <input type="submit" class="btn btn-danger" value="Delete">		        
+											        <button class="btn btn-danger btn-user" type="submit">
+													    <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+													</button>		        
 										        </form>
 											</td>
 										</tr>

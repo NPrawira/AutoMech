@@ -56,7 +56,7 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + n
 		</nav>
         <div class="container">
         	<br><br>
-			<h2 class="d-flex justify-content-center">Motorbike Services List</h2>
+			<h2 class="d-flex justify-content-center">Search "<%=search%>"</h2>
 			<br>
 			<form action="searchservice.jsp" method="get" name="search" onsubmit="return validate();">
 				<div class="row">

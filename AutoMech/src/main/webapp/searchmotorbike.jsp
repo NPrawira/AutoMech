@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <%@ page import="java.sql.*" %>
 <%
 String id = null;
@@ -12,10 +12,12 @@ if(session.getAttribute("idc") != null) {
 }
 
 Class.forName("com.mysql.cj.jdbc.Driver");
-Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = null;
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
+ResultSet rs = null;
 String search = request.getParameter("motorbike");
-ResultSet rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '" + name + "' AND (license_plate REGEXP '" + search + "' OR brand REGEXP '" + search + "' OR model REGEXP '" + search + "' OR type REGEXP '" + search + "')");
+rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '" + name + "' AND (license_plate REGEXP '" + search + "' OR brand REGEXP '" + search + "' OR model REGEXP '" + search + "' OR type REGEXP '" + search + "')");
 %>
 <!DOCTYPE html>
 <html>
@@ -82,14 +84,14 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '" + na
 	                	</tr>
 					</thead>
            			<tbody>
-	           			<%
-	           			if(!rs.isBeforeFirst()) {
-	           			%>
+           			<%
+           			if(!rs.isBeforeFirst()) {
+           			%>
            				<tr style="text-align: center; background-color: gray; color: white;"><td colspan="3">No motorbikes.</td></tr>
-	           			<%
-	           			} else {
-	           				while(rs.next()) {
-						%>	 
+           			<%
+           			} else {
+           				while(rs.next()) {
+					%>	 
                     	<tr>
                        		<td><%out.println(rs.getString("license_plate"));%></td>
         					<td><%out.println(rs.getString("brand"));%> <%out.println(rs.getString("model"));%> <%out.println(rs.getString("type"));%></td>
@@ -105,10 +107,10 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '" + na
             					</form>
             				</td>
             			</tr>
-	                   	<%
-	                   		}
-	           			}
-	           			%>
+                   	<%
+                   		}
+           			}
+           			%>
 					</tbody>
                 </table>
 			</div>

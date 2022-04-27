@@ -18,7 +18,7 @@ Statement stmt = con.createStatement();
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Motorbike Service Payments | AutoMech</title>
+        <title>Paid Motorbike Service Payments | AutoMech</title>
         <jsp:include page="support/head.jsp"></jsp:include>
     </head>
     <body>
@@ -63,13 +63,12 @@ Statement stmt = con.createStatement();
 	                		<td>Payment no</td>
 	                		<td>Service tag</td>
 	                		<td>Service type</td>
-	                		<td>Status</td>
 	                		<td>Action</td>
 	                	</tr>
 					</thead>
                 	<tbody>
                 		<%
-	           			ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE customer = '" + name + "' AND NOT status = 'Paid'");
+	           			ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE customer = '" + name + "' AND status = 'Paid'");
 	           			if(!rs.isBeforeFirst()) {
 	                   	%>
                    		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No service payments due.</td></tr>
@@ -80,22 +79,16 @@ Statement stmt = con.createStatement();
                    				String payment_no = rs.getString("payment_no");
                    				String service_tag = rs.getString("service_tag");
                    				String service_type = rs.getString("service_type");
-                   				String status = rs.getString("status");
 						%>
                     	<tr>
                         	<td><%out.println(payment_no);%></td>
                 			<td><%out.println(service_tag);%></td>
                 			<td><%out.println(service_type);%></td>
-                			<td><%out.println(status);%></td>
                     		<td class="text-center">
-                    			<% if(status.equals("Waiting")) { %>
-                    			N/A
-                    			<% } else { %>
-                    			<form action="view-payment.jsp" method="post" style="display: inline;">
+                    			<form action="invoice-service.jsp" method="post" style="display: inline;">
                     				<input type="hidden" value="<%out.println(service_payment_id);%>" name="view">
-                    				<input type="submit" class="btn btn-warning btn-user" value="View">
+                    				<input type="submit" class="btn btn-primary btn-user" value="View">
                     			</form>
-                    			<% } %>
                     		</td>
                     	</tr>
 						<%
@@ -105,9 +98,8 @@ Statement stmt = con.createStatement();
 					</tbody>
                	</table>
 			</div>
+			<br>
         </div>
-        <div class="d-flex justify-content-center links">I have paid my dues:&nbsp;<a href="paid-servicepayments.jsp">See paid service payments</a></div>
-        <br>
         <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
 			<div class="container">
 				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>

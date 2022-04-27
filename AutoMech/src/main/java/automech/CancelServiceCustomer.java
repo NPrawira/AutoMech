@@ -12,32 +12,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/updatePaymentCustomer")
-public class UpdatePaymentCustomer extends HttpServlet {
+@WebServlet("/cancelService")
+public class CancelServiceCustomer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int service_payment_id = Integer.parseInt(req.getParameter("service_payment_id"));
-		String method = req.getParameter("method");
+		String service_id = req.getParameter("cancel_service");
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE service_payments SET method = ?, status = ? WHERE service_payment_id = " + service_payment_id);
-			pstmt.setString(1, method);
-			pstmt.setString(2, "Confirming");
-			pstmt.executeUpdate();
-			getServletContext().setAttribute("error", null);
-			getServletContext().getRequestDispatcher("/myservicepayments.jsp?success=1").forward(req, resp);
+			pstmt1 = con.prepareStatement("UPDATE services SET status = ? WHERE service_id = " + service_id + "");
+			pstmt1.setString(1, "Cancelled");
+			pstmt1.executeUpdate();
+			pstmt2 = con.prepareStatement("DELETE FROM service_payments WHERE service_tag IN(SELECT service_tag FROM services WHERE service_id = " + service_id + ")");
+			pstmt2.executeUpdate();
+			getServletContext().getRequestDispatcher("/myservices.jsp").forward(req, resp);
 		} catch(SQLException e) {
-			System.out.println(e);
+			getServletContext().getRequestDispatcher("/view-service.jsp?error=1").forward(req, resp);
+			System.out.print(e);
 		} finally {
 			if(con != null) {
-				try {
+				 try {
 					 con.close();
 				 } catch (SQLException e) {
 	             	e.printStackTrace();

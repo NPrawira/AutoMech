@@ -67,11 +67,11 @@ if(session.getAttribute("idc") != null) {
         	var newpass = document.getElementById("newpass");
 			var confirmpass = document.getElementById("confirmpass");
         	function validate() {
-        		if(newpass.value != confirmpass.value) {
-        			confirmpass.setCustomValidity("Password confirmation failed.");
-        			} else {
-        				confirmpass.setCustomValidity('');
-	        		}
+				if(newpass.value != confirmpass.value) {
+					confirmpass.setCustomValidity("Password confirmation failed.");
+				} else {
+					confirmpass.setCustomValidity("");
+				}
         	}
 			newpass.onchange = validate;
 			confirmpass.onkeyup = validate;

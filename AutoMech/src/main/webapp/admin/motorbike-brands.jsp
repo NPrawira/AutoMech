@@ -11,10 +11,8 @@ if(session.getAttribute("username") != null) {
 -->
 <%
 Class.forName("com.mysql.cj.jdbc.Driver");	
-Connection con = null; 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-ResultSet rs = null;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,11 +111,13 @@ ResultSet rs = null;
                 		</div>
                 		<div class="card-body">
                 			<div class="text-left">
-								<a href="motorbike-brands-add.jsp" type="button" class="btn btn-success btn-user">Add new brand</a>
+								<a href="motorbike-brands-add.jsp" class="btn btn-success btn-user">
+								    <i class="fa fa-plus"></i>&nbsp;&nbsp;New brand
+								</a>
 							</div>
 							<hr>
                 			<div class="table-responsive">
-                				<table id="" class="table table-bordered" width="100%" cellspacing="0">
+                				<table class="table table-bordered" width="100%" cellspacing="0">
                 					<thead>
 										<tr class="bg-dark text-white" style="font-weight: bold; text-align: center">
 	                						<td>Name</td>
@@ -125,20 +125,24 @@ ResultSet rs = null;
 	                					</tr>
 									</thead>
 									<%
-	                					rs = stmt.executeQuery("SELECT * FROM motorbike_brands ORDER BY name ASC");
-		                        		while(rs.next()) {
-	                        		%>
-                					<tbody>
+		                			ResultSet rs = stmt.executeQuery("SELECT * FROM motorbike_brands ORDER BY name ASC");
+			                        while(rs.next()) {
+		                        	%>
+									<tbody>
                 						<tr>
 											<td><% out.println(rs.getString("name")); %></td>
 											<td style="text-align: center;">
 												<form action="motorbike-brands-edit.jsp" method="post" style="display: inline;">
 													<input type="hidden" value="<% out.println(rs.getInt("motorbike_brand_id")); %>" name="brand">
-				        							<input type="submit" class="btn btn-warning btn-user" value="Manage">
+				        							<button class="btn btn-warning btn-user" type="submit">
+													    <i class="fa fa-file"></i>&nbsp;&nbsp;Manage
+													</button>
 				        						</form>
 									        	<form action="deleteBrand" method="post" style="display: inline;" onsubmit="return confirm('Do you want to delete this motorbike brand?');">
 											        <input type="hidden" value="<% out.print(rs.getInt("motorbike_brand_id")); %>" name="brand">
-											        <input type="submit" class="btn btn-danger btn-user" value="Delete">		        
+											        <button class="btn btn-danger btn-user" type="submit">
+													    <i class="fa fa-trash"></i>&nbsp;&nbsp;Delete
+													</button>	        
 										        </form>
 											</td>
 										</tr>

@@ -100,8 +100,24 @@ rs.next();
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
         <script type="text/javascript">
+	        var email = document.getElementById("email");
+			var email_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			
+			var phone_no = document.getElementById("phone_no");
+			var phone_pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+			
         	function validate() {
-        		
+				if(email.value.match(email_pattern)) {
+					email.setCustomValidity("");
+				} else {
+					email.setCustomValidity("Enter a correct email format.");
+				}
+				
+				if(phone_no.value.match(phone_pattern)) {
+					phone_no.setCustomValidity("");
+				} else {
+					phone_no.setCustomValidity("Enter a correct phone number format.");
+				}
         	}
         </script>
 	</body>

@@ -1,6 +1,7 @@
 package automech;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,6 +23,8 @@ public class CreateBrand extends HttpServlet {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		resp.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = resp.getWriter();
 		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -30,6 +33,10 @@ public class CreateBrand extends HttpServlet {
 			pstmt.setString(1, name);
 			pstmt.executeUpdate();
 			getServletContext().getRequestDispatcher("/admin/motorbike-brands.jsp").forward(req, resp);
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('A motorbike brand has been added successfully.');");
+			out.println("location='/admin/motorbike-brands.jsp';");
+			out.println("</script>");
 		} catch (SQLException e) {
 			System.out.print(e);
 		} finally {
@@ -41,10 +48,5 @@ public class CreateBrand extends HttpServlet {
 				 }
 			}
 		}
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 }
