@@ -23,12 +23,10 @@ public class CreateMechanic extends HttpServlet {
 		String specialization = req.getParameter("specialization").toString();
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("INSERT INTO mechanics(mechanic_code, name, specialization) VALUES(?, ?, ?)");
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO mechanics(mechanic_code, name, specialization) VALUES(?, ?, ?)");
 			pstmt.setString(1, mechanic_code);
 			pstmt.setString(2, name);
 			pstmt.setString(3, specialization);
@@ -47,10 +45,5 @@ public class CreateMechanic extends HttpServlet {
 				 }
 			}
 		}
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 }

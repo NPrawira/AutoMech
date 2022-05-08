@@ -3,10 +3,9 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%
-String id = null;
 String name = null;
 if(session.getAttribute("idc") != null) {
-	id = session.getAttribute("idc").toString();	
+	String id = session.getAttribute("idc").toString();	
 	name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
@@ -60,7 +59,7 @@ Statement stmt = con.createStatement();
 				<div class="col-md-12 mx-auto">
 					<div class="card border-0 shadow rounded-3 my-5">
 						<div class="card-body p-4 p-sm-5">
-							<h1 class="card-title text-center mb-5 fw-bold fs-5">New service request</h1>
+							<h1 class="card-title text-center mb-5 fw-bold fs-5">New Service Request</h1>
 	            			<form action="createService" method="post" onsubmit="return validate();">
 	            				<input type="hidden" id="customer" name="customer" value="<%out.print(name);%>">
 	              				<div class="row">
@@ -124,11 +123,7 @@ Statement stmt = con.createStatement();
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/scripts.js"></script>
         <script type="text/javascript">

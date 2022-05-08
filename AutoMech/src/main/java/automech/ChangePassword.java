@@ -23,18 +23,16 @@ public class ChangePassword extends HttpServlet {
 		String oldpass = req.getParameter("oldpass");
 		String newpass = req.getParameter("newpass");
 		
-		PreparedStatement pstmt = null;
 		Connection con = null;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 			java.sql.Statement stmt = con.createStatement();
-			ResultSet rs = null;
-			rs = stmt.executeQuery("SELECT password FROM customers WHERE customer_id = " + id);
+			ResultSet rs = stmt.executeQuery("SELECT password FROM customers WHERE customer_id = " + id);
 			rs.next();
 			String pass = rs.getString(1);
 			if(oldpass.equals(pass)) {
-				pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE customer_id = " + id);
+				PreparedStatement pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE customer_id = " + id);
 				pstmt.setString(1, newpass);
 				pstmt.executeUpdate();
 				getServletContext().getRequestDispatcher("/myprofile.jsp?success=1").forward(req, resp);

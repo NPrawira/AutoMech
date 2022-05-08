@@ -22,12 +22,10 @@ public class UpdatePaymentCustomer extends HttpServlet {
 		String method = req.getParameter("method");
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE service_payments SET method = ?, status = ? WHERE service_payment_id = " + service_payment_id);
+			PreparedStatement pstmt = con.prepareStatement("UPDATE service_payments SET method = ?, status = ? WHERE service_payment_id = " + service_payment_id);
 			pstmt.setString(1, method);
 			pstmt.setString(2, "Confirming");
 			pstmt.executeUpdate();

@@ -1,21 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-<!-- 
-String username = null;
-if(session.getAttribute("username") != null) {
-	username = session.getAttribute("username").toString();
+<%
+if(session.getAttribute("ida") != null) {
+	String ida = session.getAttribute("ida").toString();
+	String username = session.getAttribute("admin").toString();
 } else {
 	response.sendRedirect("login.jsp");
 }
--->
-<%
+
 Class.forName("com.mysql.cj.jdbc.Driver");
 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
-
-String service_payment = request.getParameter("service_payment");
-ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE service_payment_id = " + service_payment);
+String id = request.getParameter("service_payment");
+ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE service_payment_id = " + id);
 rs.next();
 
 int service_payment_id = rs.getInt("service_payment_id");
@@ -120,27 +118,27 @@ String status = rs.getString("status");
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">Manage Service Payment</h1>
                 	<div class="container col-md-12">
-	                	<form action="updatePaymentAdmin" method="post" onsubmit="return confirm('Update payment for this service?');">
+	                	<form action="updatePaymentAdmin" class="user" method="post" onsubmit="return confirm('Update payment for this service?');">
 	                		<input type="hidden" id="service_payment_id" name="service_payment_id" value="<%out.print(service_payment_id);%>">
 	                		<div class="form-group row">
 	                			<div class="col-sm-3 mb-3 mb-sm-0">
 	                				<label>Payment no.</label>
-	                				<input type="text" class="form-control" id="payment_no" name="payment_no" value="<%out.print(payment_no);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="payment_no" name="payment_no" value="<%out.print(payment_no);%>" style="background: white;" readonly>
 	                			</div>
 	                			<div class="col-sm-3">
 	                				<label>Service tag</label>
-	                				<input type="text" class="form-control" id="service_tag" name="service_tag" value="<%out.print(service_tag);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="service_tag" name="service_tag" value="<%out.print(service_tag);%>" style="background: white;" readonly>
 	                			</div>
 	                			<div class="col-sm-3">
 	                				<label>Date</label>
-	                				<input type="date" class="form-control" id="date" name="date" onclick="validDate()" required="required">
+	                				<input type="date" class="form-control form-control-user" id="date" name="date" onclick="validDate()" required="required">
 	                				<script type="text/javascript">
 										document.getElementById("date").value = <%out.print("'" + date + "'");%>;
 									</script>
 	                			</div>
 	                			<div class="col-sm-3">
 	                				<label>Status</label>
-									<select class="form-control" id="status" name="status" required>
+									<select class="form-control" id="status" name="status" required="required">
 		                				<option disabled="disabled" selected="selected">Select status...</option>
 		                				<option value="Payment due">Payment due</option>
 		                				<option value="Paid">Paid</option>
@@ -158,7 +156,7 @@ String status = rs.getString("status");
 	                				rs2.next();
 	                				String type = rs2.getString("type");
 	                				%>
-									<input type="text" class="form-control" id="motorbike_type" name="motorbike_type" value="<%out.println(type);%>" readonly>
+									<input type="text" class="form-control form-control-user" id="motorbike_type" name="motorbike_type" value="<%out.println(type);%>" style="background: white;" readonly>
 	                			</div>
 	                			<div class="col-sm-6">
 	                				<label>Motorbike type price (RM)</label>
@@ -175,13 +173,13 @@ String status = rs.getString("status");
 	                					type_price = 15;
 	                				}
 	                				%>
-									<input type="text" class="form-control" id="motorbike_type_price" name="motorbike_type_price" value="<%out.print(type_price);%>" readonly>
+									<input type="text" class="form-control form-control-user" id="motorbike_type_price" name="motorbike_type_price" value="<%out.print(type_price);%>" style="background: white;" readonly>
 	                			</div>
 	                		</div>
 	                		<div class="form-group row">
 	                			<div class="col-sm-6 mb-3 mb-sm-0">
 	                				<label>Service type</label>
-	                				<input type="text" class="form-control" id="service_type" name="service_type" value="<%out.print(service_type);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="service_type" name="service_type" value="<%out.print(service_type);%>" style="background: white;" readonly>
 	                			</div>
 	                			<div class="col-sm-6">
 	                				<label>Service type price (RM)</label>
@@ -190,35 +188,35 @@ String status = rs.getString("status");
 	                				rs1.next();
 	                				int price = rs1.getInt(1);
 	                				%>
-									<input type="text" class="form-control" id="service_type_price" name="service_type_price" value="<%out.print(price);%>" readonly>
+									<input type="text" class="form-control form-control-user" id="service_type_price" name="service_type_price" value="<%out.print(price);%>" style="background: white;" readonly>
 	                			</div>
 	                		</div>
 	                		<div class="form-group row">
 	                			<div class="col-sm-6 mb-3 mb-sm-0">
 	                				<label>Payment method</label>
 	                				<% if(method.equals("")) { %>
-	                				<input type="text" class="form-control" id="method" name="method" placeholder="To be determined by customer" readonly>
+	                				<input type="text" class="form-control form-control-user" id="method" name="method" placeholder="To be determined by customer" style="background: white;" readonly>
 	                				<% } else { %>
-	                				<input type="text" class="form-control" id="method" name="method" value="<%out.print(method);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="method" name="method" value="<%out.print(method);%>" style="background: white;" readonly>
 	                				<% } %>
 	                			</div>
 	                			<% if(amount == 0) { %>
 	                			<div class="col-sm-4">
 	                				<label>Amount</label>
-	                				<input type="text" class="form-control" id="amount" name="amount" value="<%out.print(amount);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="amount" name="amount" placeholder="Click calculate total to get the amount..." onkeydown="return false;" style="caret-color: transparent !important;" required="required">
 	                			</div>
 	                			<div class="col-sm-2">
-	                				<input class="btn btn-primary" type="button" value="Calculate total" onclick="calcAmount()" style="display: inline;">
+	                				<input class="btn btn-primary btn-user" type="button" value="Calculate total" onclick="calcAmount()" style="display: inline;">
 	                			</div>
 	                			<% } else { %>
 	                			<div class="col-sm-6">
 	                				<label>Amount</label>
-	                				<input type="text" class="form-control" id="amount" name="amount" value="<%out.print(amount);%>" readonly>	                				
+	                				<input type="text" class="form-control form-control-user" id="amount" name="amount" value="<%out.print(amount);%>" style="background: white;" readonly="readonly">	                				
 	                			</div>
 	                			<% } %>
 	                		</div>
 	                		<hr>
-	                		<input class="btn btn-warning" type="submit" value="Update">
+	                		<input class="btn btn-warning btn-user" type="submit" value="Update">
 	                	</form>
 	                </div>
                 </div>
@@ -238,11 +236,11 @@ String status = rs.getString("status");
     	function validDate(){
 	    	var today = new Date().toISOString().split('T')[0];
 	    	document.getElementsByName("date")[0].setAttribute('min', today);
-	    	document.getElementsByName("date")[0].setAttribute('max', today)
+	    	document.getElementsByName("date")[0].setAttribute('max', today);
 	    }
     	
-    	function calcAmount () {
-    	    var service = document.getElementById ("service_type_price").value;
+    	function calcAmount() {
+    	    var service = document.getElementById("service_type_price").value;
     	    service = parseInt (service);
     	    var motorbike = document.getElementById("motorbike_type_price").value;
     	    motorbike = parseInt (motorbike);

@@ -24,12 +24,10 @@ public class EditServiceType extends HttpServlet {
 		int price = Integer.parseInt(req.getParameter("price"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE service_types SET service_type_id = ?, service_code = ?, name = ?, price = ? WHERE service_type_id = " + id);
+			PreparedStatement pstmt = con.prepareStatement("UPDATE service_types SET service_type_id = ?, service_code = ?, name = ?, price = ? WHERE service_type_id = " + id);
 			pstmt.setInt(1, id);
 			pstmt.setString(2, service_code);
 			pstmt.setString(3, name);
@@ -47,10 +45,5 @@ public class EditServiceType extends HttpServlet {
 				 }
 			}
 		}
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 }

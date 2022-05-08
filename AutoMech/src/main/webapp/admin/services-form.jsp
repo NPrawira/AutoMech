@@ -1,15 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!-- 
-String username = null;
-if(session.getAttribute("username") != null) {
-	username = session.getAttribute("username").toString();
+<%@ page import="java.sql.*" %>
+<%
+if(session.getAttribute("ida") != null) {
+	String ida = session.getAttribute("ida").toString();
+	String username = session.getAttribute("admin").toString();
 } else {
 	response.sendRedirect("login.jsp");
 }
--->
-<%@ page import="java.sql.*" %>
-<%
+
 Class.forName("com.mysql.cj.jdbc.Driver");
 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
@@ -121,20 +120,20 @@ String mechanic_notes = rs.getString("mechanic_notes");
                 	<!-- Page Heading -->
                 	<h1 class="h3 mb-4 text-gray-800">Manage Service Query</h1>
                 	<div class="container col-md-12">
-	                	<form action="updateService" method="post" onsubmit="return confirm('Update this motorbike service progress?');">
+	                	<form action="updateService" class="user" method="post" onsubmit="return confirm('Update this motorbike service progress?');">
 	                		<input type="hidden" id="service_id" name="service_id" value="<%=rs.getInt("service_id")%>">
 	                		<div class="form-group row">
 	                			<div class="col-sm-4 mb-3 mb-sm-0">
 	                				<label>Service tag</label>
-	                				<input type="text" class="form-control" id="service_tag" name="service_tag" value="<%out.println(service_tag);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="service_tag" name="service_tag" value="<%out.println(service_tag);%>" style="background: white;" readonly="readonly">
 	                			</div>
 	                			<div class="col-sm-4">
 	                				<label>Motorbike</label>
-	                				<input type="text" class="form-control" id="motorbike" name="motorbike" value="<%out.println(motorbike);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="motorbike" name="motorbike" value="<%out.println(motorbike);%>" style="background: white;" readonly="readonly">
 	                			</div>
 	                			<div class="col-sm-4">
 	                				<label>Status</label>
-									<select class="form-control" id="status" name="status" required>
+									<select class="form-control" id="status" name="status" required="required">
 		                				<option disabled="disabled" selected="selected">Select status...</option>
 		                				<option value="In service">In service</option>
 		                				<option value="Finished">Finished</option>
@@ -147,11 +146,11 @@ String mechanic_notes = rs.getString("mechanic_notes");
 	                		<div class="form-group row">
 	                			<div class="col-sm-4 mb-3 mb-sm-0">
 	                				<label>Service type</label>
-	                				<input type="text" class="form-control" id="service_type" name="service_type" value="<%out.println(service_type);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="service_type" name="service_type" value="<%out.println(service_type);%>" style="background: white;" readonly="readonly">
 	                			</div>
 	                			<div class="col-sm-4">
 	                				<label>Request date</label>
-	                				<input type="date" class="form-control" id="start_date" name="start_date" readonly>
+	                				<input type="date" class="form-control form-control-user" id="start_date" name="start_date" style="background: white;" readonly="readonly">
 	                				<script type="text/javascript">
 										document.getElementById("start_date").value = <%out.print("'" + start_date + "'");%>;
 									</script>
@@ -159,9 +158,9 @@ String mechanic_notes = rs.getString("mechanic_notes");
 	                			<div class="col-sm-4">
 	                				<label>Finish date</label>
 	                				<% if(rs.getString("status").equals("Finished")) { %>
-	                				<input type="date" class="form-control" id="finish_date" name="finish_date" readonly>
+	                				<input type="date" class="form-control form-control-user" id="finish_date" name="finish_date" style="background: white;" readonly="readonly">
 	                				<% } else { %>
-	                				<input type="date" class="form-control" id="finish_date" name="finish_date" onclick="validDate()">
+	                				<input type="date" class="form-control form-control-user" id="finish_date" name="finish_date" onclick="validDate()">
 	                				<% } %>
 	                				<script type="text/javascript">
 										document.getElementById("finish_date").value = <%out.print("'" + finish_date + "'");%>;
@@ -171,17 +170,17 @@ String mechanic_notes = rs.getString("mechanic_notes");
 	                		<div class="form-group row">
 	                			<div class="col-sm-4 mb-3 mb-sm-0">
 	                				<label>Customer</label>
-	                				<input type="text" class="form-control" id="customer" name="customer" value="<%out.println(customer);%>" readonly>
+	                				<input type="text" class="form-control form-control-user" id="customer" name="customer" value="<%out.println(customer);%>" style="background: white;" readonly="readonly">
 	                			</div>
 	                			<div class="col-sm-8">
 	                				<label>Customer notes</label>
-	                				<input type="text" class="form-control" id="customer_notes" name="customer_notes" value="<%out.println(customer_notes);%>" readonly="readonly">
+	                				<input type="text" class="form-control form-control-user" id="customer_notes" name="customer_notes" value="<%out.println(customer_notes);%>" style="background: white;" readonly="readonly">
 	                			</div>
 	                		</div>
 	                		<div class="form-group row">
 	                			<div class="col-sm-4 mb-3 mb-sm-0">
 	                				<label>Mechanic</label>
-									<select class="form-control" id="mechanic" name="mechanic" required>
+									<select class="form-control" id="mechanic" name="mechanic" required="required">
 		                				<option disabled="disabled" selected="selected">Select mechanic...</option>
 		                				<%
 		                				ResultSet rs1 = null;
@@ -197,11 +196,11 @@ String mechanic_notes = rs.getString("mechanic_notes");
 	                			</div>
 	                			<div class="col-sm-8">
 	                				<label>Mechanic notes</label>
-	                				<input type="text" class="form-control" id="mechanic_notes" name="mechanic_notes" value="<%out.println(mechanic_notes);%>">
+	                				<input type="text" class="form-control form-control-user" id="mechanic_notes" name="mechanic_notes" value="<%out.println(mechanic_notes);%>">
 	                			</div>
 	                		</div>
 	                		<hr>
-	                		<input class="btn btn-warning" type="submit" value="Update">
+	                		<input class="btn btn-warning btn-user" type="submit" value="Update">
 	                	</form>
 	                </div>
                 </div>

@@ -1,7 +1,6 @@
 package automech;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,22 +20,14 @@ public class CreateBrand extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String name = req.getParameter("name");
 		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		resp.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = resp.getWriter();
-		
+		Connection con = null;	
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("INSERT INTO motorbike_brands(name) VALUES(?)");
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO motorbike_brands(name) VALUES(?)");
 			pstmt.setString(1, name);
 			pstmt.executeUpdate();
 			getServletContext().getRequestDispatcher("/admin/motorbike-brands.jsp").forward(req, resp);
-			out.println("<script type=\"text/javascript\">");
-			out.println("alert('A motorbike brand has been added successfully.');");
-			out.println("location='/admin/motorbike-brands.jsp';");
-			out.println("</script>");
 		} catch (SQLException e) {
 			System.out.print(e);
 		} finally {

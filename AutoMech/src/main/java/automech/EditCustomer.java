@@ -26,12 +26,10 @@ public class EditCustomer extends HttpServlet {
 		int postal_code = Integer.parseInt(req.getParameter("postal_code"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE customers SET customer_id = ?, name = ?, email = ?, phone_no = ?, address = ?, postal_code = ? WHERE customer_id = " + id);
+			PreparedStatement pstmt = con.prepareStatement("UPDATE customers SET customer_id = ?, name = ?, email = ?, phone_no = ?, address = ?, postal_code = ? WHERE customer_id = " + id);
 			pstmt.setInt(1, id);
 			pstmt.setString(2, name);
 			pstmt.setString(3, email);

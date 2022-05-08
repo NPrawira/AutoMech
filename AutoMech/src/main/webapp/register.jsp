@@ -73,11 +73,7 @@ if(session.getAttribute("idc") != null) {
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
 	  	<!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
@@ -89,19 +85,28 @@ if(session.getAttribute("idc") != null) {
 			var phone_no = document.getElementById("phone_no");
 			var phone_pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 			
+        	var password = document.getElementById("password");
+			var password_pattern = ;
+			
         	function validate() {
-				if(email.value.match(email_pattern)) {
-					email.setCustomValidity("");
+        		if(email.value.match(email_pattern)) {
+    				email.setCustomValidity("");
+    			} else {
+    				email.setCustomValidity("Enter a correct email format.");
+    			}
+        		
+        		if(phone_no.value.match(phone_pattern)) {
+    				phone_no.setCustomValidity("");
+    			} else {
+    				phone_no.setCustomValidity("Enter a correct phone number format.");
+    			}
+        		
+				if(password.value.match(password_pattern)) {
+					password.setCustomValidity("");
 				} else {
-					email.setCustomValidity("Enter a correct email format.");
+					password.setCustomValidity("Password cannot be like this.");
 				}
-				
-				if(phone_no.value.match(phone_pattern)) {
-					phone_no.setCustomValidity("");
-				} else {
-					phone_no.setCustomValidity("Enter a correct phone number format.");
-				}
-			}
+        	}
 		</script>
 	</body>
 </html>

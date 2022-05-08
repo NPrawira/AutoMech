@@ -2,10 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String id = null;
 String name = null;
 if(session.getAttribute("idc") != null) {
-	id = session.getAttribute("idc").toString();
+	String id = session.getAttribute("idc").toString();
 	name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
@@ -15,7 +14,6 @@ Class.forName("com.mysql.cj.jdbc.Driver");
 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 Statement stmt = con.createStatement();
 String search = request.getParameter("service");
-ResultSet rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + name + "' AND (service_tag REGEXP '" + search + "' OR service_type REGEXP '" + search + "' OR motorbike REGEXP '" + search + "')");
 %>
 <!DOCTYPE html>
 <html>
@@ -85,23 +83,43 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + n
 					</thead>
                 	<tbody>
                 		<%
+                		ResultSet rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + name + "' AND (service_tag REGEXP '" + search + "' OR service_type REGEXP '" + search + "' OR motorbike REGEXP '" + search + "')");
                 		if(!rs.isBeforeFirst()) {	
 	                   	%>
                    		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No service queries.</td></tr>
                    		<%
                    		} else {
-                   				while(rs.next()) {
+                   			while(rs.next()) {
+                   				int service_id = rs.getInt("service_id");
+                       			String service_tag = rs.getString("service_tag");
+                       			String motorbike = rs.getString("motorbike");
+                       			String service_type = rs.getString("service_type");
+                       			String status = rs.getString("status");
 						%>
                     	<tr>
-                        	<td><%out.println(rs.getString("service_tag"));%></td>
-                			<td><%out.println(rs.getString("motorbike"));%></td>
-                			<td><%out.println(rs.getString("service_type"));%></td>
-                			<td><%out.println(rs.getString("status"));%></td>
-                    		<td style="text-align: center">
+                        	<td><%out.println(service_tag);%></td>
+                			<td><%out.println(motorbike);%></td>
+                			<td><%out.println(service_type);%></td>
+                			<td class="text-center">
+								<% if(status.equals("Requested")) { %>
+								<p style="display: inline; color: gray; padding: 5px"><%out.println(status);%></p>
+								<% } else if(status.equals("Cancelled")) { %>
+								<p style="display: inline; background-color: red; color: #FFCCBB; padding: 5px"><%out.println(status);%></p>
+								<% } else if(status.equals("In service")) { %>
+								<p style="display: inline; background-color: orange; color: #FFFF00; padding: 5px"><%out.println(status);%></p>
+								<% } else if(status.equals("Finished")) { %>
+								<p style="display: inline; background-color: green; color: #90EE90; padding: 5px"><%out.println(status);%></p>
+								<% } %>
+							</td>
+                    		<td class="text-center">
+                    		<% if(!status.equals("Cancelled")) { %>
                     			<form action="view-service.jsp" method="post" style="display: inline;">
-                    				<input type="hidden" value="<%out.println(rs.getInt("service_id"));%>" name="view">
+                    				<input type="hidden" value="<%out.println(service_id);%>" name="view">
                     				<input type="submit" class="btn btn-primary btn-user" value="View">
                     			</form>
+                    		<% } else { %>
+                    			N/A
+                    		<% } %>
                     		</td>
                     	</tr>
 						<%
@@ -114,19 +132,15 @@ ResultSet rs = stmt.executeQuery("SELECT * FROM services WHERE customer = '" + n
 			<br>
         </div>
         <br>
-        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+        <jsp:include page="support/footer.jsp"></jsp:include>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
         <script type="text/javascript">
 	        function validate() {
-	        	var x = document.forms["search"]["service"].value;
-	        	if (x == null || x == "") {
+	        	var search = document.getElementById("service").value;
+	        	if (search == null || search == "") {
 	        		alert("Enter your search!");
 	        		return false;
 	            }

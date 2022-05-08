@@ -28,23 +28,19 @@ public class CreateService extends HttpServlet {
 		String payment_no = req.getParameter("payment_no");
 		
 		Connection con = null;
-		PreparedStatement pstmt1 = null;
-		PreparedStatement pstmt2 = null;
-		ResultSet date_avail = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
 			
 			java.sql.Statement stmt = con.createStatement();
-			date_avail = stmt.executeQuery("SELECT COUNT(start_date) FROM services WHERE start_date = '" + start_date + "'");
+			ResultSet date_avail = stmt.executeQuery("SELECT COUNT(start_date) FROM services WHERE start_date = '" + start_date + "'");
 			date_avail.next();
 			int check_date = date_avail.getInt(1);
 			
 			if(check_date >= 5) {
 				getServletContext().getRequestDispatcher("/mymotorbikes.jsp?limit=1").forward(req, resp);
 			} else {
-				pstmt1 = con.prepareStatement("INSERT INTO services(service_tag, motorbike, customer, start_date, finish_date, service_type, mechanic, customer_notes, mechanic_notes, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				PreparedStatement pstmt1 = con.prepareStatement("INSERT INTO services(service_tag, motorbike, customer, start_date, finish_date, service_type, mechanic, customer_notes, mechanic_notes, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				pstmt1.setString(1, service_tag);
 				pstmt1.setString(2, motorbike);
 				pstmt1.setString(3, customer);
@@ -57,7 +53,7 @@ public class CreateService extends HttpServlet {
 				pstmt1.setString(10, "Requested");
 				pstmt1.executeUpdate();
 				
-				pstmt2 = con.prepareStatement("INSERT INTO service_payments(payment_no, customer, date, service_tag, service_type, amount, method, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+				PreparedStatement pstmt2 = con.prepareStatement("INSERT INTO service_payments(payment_no, customer, date, service_tag, service_type, amount, method, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 				pstmt2.setString(1, payment_no);
 				pstmt2.setString(2, customer);
 				pstmt2.setString(3, null);

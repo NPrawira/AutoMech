@@ -26,12 +26,10 @@ public class CreateMotorbike extends HttpServlet {
 		int kilometer = Integer.parseInt(req.getParameter("kilometer"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("INSERT INTO motorbikes(license_plate, owner, type, brand, model, kilometer) VALUES(?, ?, ?, ?, ?, ?)");
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO motorbikes(license_plate, owner, type, brand, model, kilometer) VALUES(?, ?, ?, ?, ?, ?)");
 			pstmt.setString(1, licenseplate);
 			pstmt.setString(2, owner);
 			pstmt.setString(3, type);

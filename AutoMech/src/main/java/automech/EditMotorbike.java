@@ -27,12 +27,10 @@ public class EditMotorbike extends HttpServlet {
 		int kilometer = Integer.parseInt(req.getParameter("kilometer"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE motorbikes SET motorbike_id = ?, license_plate = ?, owner = ?, type = ?, brand = ?, model = ?, kilometer = ? WHERE motorbike_id = " + id);
+			PreparedStatement pstmt = con.prepareStatement("UPDATE motorbikes SET motorbike_id = ?, license_plate = ?, owner = ?, type = ?, brand = ?, model = ?, kilometer = ? WHERE motorbike_id = " + id);
 			pstmt.setInt(1, id);
 			pstmt.setString(2, licenseplate);
 			pstmt.setString(3, owner);

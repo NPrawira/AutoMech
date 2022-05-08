@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String idc = null;
-String name = null;
 if(session.getAttribute("idc") != null) {
-	idc = session.getAttribute("idc").toString();
-	name = session.getAttribute("customer").toString();
+	String id = session.getAttribute("idc").toString();
+	String name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
 }
@@ -140,11 +138,7 @@ String brand = rs.getString("brand");
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/scripts.js"></script>
         <script type="text/javascript">

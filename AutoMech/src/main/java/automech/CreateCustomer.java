@@ -26,12 +26,10 @@ public class CreateCustomer extends HttpServlet {
 		int postal_code = Integer.parseInt(req.getParameter("postal_code"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("INSERT INTO customers(name, email, password, phone_no, address, postal_code) VALUES(?, ?, ?, ?, ?, ?)");
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO customers(name, email, password, phone_no, address, postal_code) VALUES(?, ?, ?, ?, ?, ?)");
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
 			pstmt.setString(3, password);

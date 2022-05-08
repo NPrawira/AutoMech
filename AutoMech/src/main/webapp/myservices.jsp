@@ -2,10 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String id = null;
 String name = null;
 if(session.getAttribute("idc") != null) {
-	id = session.getAttribute("idc").toString();
+	String id = session.getAttribute("idc").toString();
 	name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
@@ -112,10 +111,14 @@ Statement stmt = con.createStatement();
 								<% } %>
 							</td>
                     		<td class="text-center">
+                    		<% if(!status.equals("Cancelled")) { %>
                     			<form action="view-service.jsp" method="post" style="display: inline;">
                     				<input type="hidden" value="<%out.println(service_id);%>" name="view">
                     				<input type="submit" class="btn btn-primary btn-user" value="View">
                     			</form>
+                    		<% } else { %>
+                    			N/A
+                    		<% } %>
                     		</td>
                     	</tr>
 						<%
@@ -128,18 +131,14 @@ Statement stmt = con.createStatement();
 			<br>
         </div>
         <br>
-        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+        <jsp:include page="support/footer.jsp"></jsp:include>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
         <script type="text/javascript">
 	        function validate() {
-	        	var search = document.forms["search"]["service"].value;
+	        	var search = document.getElementById("service").value;
 	        	if (search == null || search == "") {
 	        		alert("Enter your search!");
 	        		return false;

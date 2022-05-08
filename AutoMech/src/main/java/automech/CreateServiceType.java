@@ -23,12 +23,10 @@ public class CreateServiceType extends HttpServlet {
 		int price = Integer.parseInt(req.getParameter("price"));
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("INSERT INTO service_types(service_code, name, price) VALUES(?, ?, ?)");
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO service_types(service_code, name, price) VALUES(?, ?, ?)");
 			pstmt.setString(1, service_code);
 			pstmt.setString(2, name);
 			pstmt.setInt(3, price);
@@ -47,10 +45,5 @@ public class CreateServiceType extends HttpServlet {
 				 }
 			}
 		}
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 }

@@ -2,10 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String id = null;
 String name = null;
 if(session.getAttribute("idc") != null) {
-	id = session.getAttribute("idc").toString();
+	String id = session.getAttribute("idc").toString();
 	name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
@@ -54,13 +53,13 @@ Statement stmt = con.createStatement();
 		</nav>
         <div class="container">
         	<br><br>
-			<h2 class="d-flex justify-content-center">Motorbike Service Payments List</h2>
+			<h2 class="d-flex justify-content-center">Paid Motorbike Service Payments</h2>
 			<br><hr><br>
 			<div class="table-responsive">
 				<table id="tblService" class="table table-bordered">
                 	<thead>
-						<tr class="bg-secondary text-white" style="font-weight: bold; text-align: center">
-	                		<td>Payment no</td>
+						<tr class="bg-secondary text-white text-center" style="font-weight: bold;">
+	                		<td>Payment no.</td>
 	                		<td>Service tag</td>
 	                		<td>Service type</td>
 	                		<td>Action</td>
@@ -71,7 +70,7 @@ Statement stmt = con.createStatement();
 	           			ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE customer = '" + name + "' AND status = 'Paid'");
 	           			if(!rs.isBeforeFirst()) {
 	                   	%>
-                   		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No service payments due.</td></tr>
+                   		<tr style="text-align: center; background-color: gray; color: white;"><td colspan="5">No paid service payments.</td></tr>
                    		<%
                    		} else {
                    			while(rs.next()) {
@@ -87,7 +86,7 @@ Statement stmt = con.createStatement();
                     		<td class="text-center">
                     			<form action="invoice-service.jsp" method="post" style="display: inline;">
                     				<input type="hidden" value="<%out.println(service_payment_id);%>" name="view">
-                    				<input type="submit" class="btn btn-primary btn-user" value="View">
+                    				<input type="submit" class="btn btn-primary btn-user" value="View invoice">
                     			</form>
                     		</td>
                     	</tr>
@@ -100,11 +99,7 @@ Statement stmt = con.createStatement();
 			</div>
 			<br>
         </div>
-        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+        <jsp:include page="support/footer.jsp"></jsp:include>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

@@ -2,10 +2,9 @@
     pageEncoding="utf-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String id = null;
 String name = null;
 if(session.getAttribute("idc") != null) {
-	id = session.getAttribute("idc").toString();
+	String id = session.getAttribute("idc").toString();
 	name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
@@ -119,11 +118,7 @@ rs = stmt.executeQuery("SELECT * FROM motorbikes WHERE owner = '" + name + "' AN
 			</div>
 			<br>
         </div>
-        <footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+        <jsp:include page="support/footer.jsp"></jsp:include>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

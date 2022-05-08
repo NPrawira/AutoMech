@@ -6,32 +6,44 @@ if(session.getAttribute("idc") != null) {
 	response.sendRedirect("index.jsp");
 }
 
-try {
+if(request.getParameter("reset") != null) {
 	Class.forName("com.mysql.cj.jdbc.Driver");
+
 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-		
-	if(request.getParameter("reset") != null) {
-		String email = request.getParameter("email");
-		String phone_no = request.getParameter("phone_no");
-		String newpass = request.getParameter("newpassword");
-		String confirmpass = request.getParameter("confirmpassword");
-			
-		if(confirmpass.equals(newpass)) {
-			PreparedStatement pstmt = null;
-			pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE email = ? AND phone_no = ?");
-			pstmt.setString(1, newpass);
-			pstmt.setString(2, email);
-			pstmt.setString(3, phone_no);
-			pstmt.executeUpdate();
-			request.setAttribute("success", "Your password has been reset.");
-			con.close();	
-		} else {
-			request.setAttribute("wrong", "Password don't match.");
-		}
+	Statement stmt = con.createStatement();
+
+	String email = request.getParameter("email");
+	String phone_no = request.getParameter("phone_no");
+	String newpass = request.getParameter("newpass");
+	String confirmpass = request.getParameter("confirmpass");
+
+	ResultSet rs = null;
+	try {
+		rs = stmt.executeQuery("SELECT COUNT(*) FROM customers WHERE email = '" + email + "' AND phone_no = '" + phone_no + "'");
+	} catch(Exception e) {
+		e.printStackTrace();
 	}
-} catch(Exception e) {
-	e.printStackTrace();
-	request.setAttribute("error", "An error occurred. Please try again.");
+
+	rs.next();
+	if(!rs.getString(1).equals("0")) {
+		try {
+			rs = stmt.executeQuery("SELECT * FROM customers WHERE email = '" + email + "' AND phone_no = '" + phone_no + "'");
+			while(rs.next()) {
+				if(rs.getString("email").equals(email) && rs.getString("phone_no").equals(phone_no) && newpass.equals(confirmpass)) {
+					PreparedStatement pstmt = con.prepareStatement("UPDATE customers SET password = ? WHERE email = '" + email + "' AND phone_no = '" + phone_no + "'");
+					pstmt.setString(1, newpass);
+					pstmt.executeUpdate();
+					getServletContext().getRequestDispatcher("/login.jsp?reset=1").forward(request, response);
+				} else {
+					getServletContext().getRequestDispatcher("/resetpassword.jsp?error=1").forward(request, response);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	} else {
+		request.setAttribute("error", "Cannot find account with this email and/or phone number. Please try again.");
+	}
 }
 %>
 <!DOCTYPE html>
@@ -102,11 +114,7 @@ try {
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
 	  	<!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

@@ -11,10 +11,12 @@
                 </button>
 			</div>
             <div class="modal-body">Click on "Logout" to end your administration session.</div>
-            <div class="modal-footer">
-            	<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="logout.jsp">Logout</a>
-			</div>
+            <form class="user">
+            	<div class="modal-footer">
+	            	<button class="btn btn-secondary btn-user" type="button" data-dismiss="modal">Cancel</button>
+	                <a class="btn btn-primary btn-user" href="logout.jsp">Logout</a>
+				</div>
+            </form>
 		</div>
 	</div>
 </div>

@@ -22,12 +22,10 @@ public class EditBrand extends HttpServlet {
 		String name = req.getParameter("name");
 		
 		Connection con = null;
-		PreparedStatement pstmt = null;
-		
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt = con.prepareStatement("UPDATE motorbike_brands SET motorbike_brand_id = ?, name = ? WHERE motorbike_brand_id = " + id);
+			PreparedStatement pstmt = con.prepareStatement("UPDATE motorbike_brands SET motorbike_brand_id = ?, name = ? WHERE motorbike_brand_id = " + id);
 			pstmt.setInt(1, id);
 			pstmt.setString(2, name);	
 			pstmt.executeUpdate();			
@@ -43,10 +41,5 @@ public class EditBrand extends HttpServlet {
 				 }
 			}
 		}
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 }

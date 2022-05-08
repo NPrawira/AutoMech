@@ -21,15 +21,13 @@ public class CancelServiceCustomer extends HttpServlet {
 		String service_id = req.getParameter("cancel_service");
 		
 		Connection con = null;
-		PreparedStatement pstmt1 = null;
-		PreparedStatement pstmt2 = null;
 		try {
 			DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/automech", "root", "");
-			pstmt1 = con.prepareStatement("UPDATE services SET status = ? WHERE service_id = " + service_id + "");
+			PreparedStatement pstmt1 = con.prepareStatement("UPDATE services SET status = ? WHERE service_id = " + service_id + "");
 			pstmt1.setString(1, "Cancelled");
 			pstmt1.executeUpdate();
-			pstmt2 = con.prepareStatement("DELETE FROM service_payments WHERE service_tag IN(SELECT service_tag FROM services WHERE service_id = " + service_id + ")");
+			PreparedStatement pstmt2 = con.prepareStatement("DELETE FROM service_payments WHERE service_tag IN(SELECT service_tag FROM services WHERE service_id = " + service_id + ")");
 			pstmt2.executeUpdate();
 			getServletContext().getRequestDispatcher("/myservices.jsp").forward(req, resp);
 		} catch(SQLException e) {

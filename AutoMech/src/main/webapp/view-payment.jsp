@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String idc = null;
-String name = null;
 if(session.getAttribute("idc") != null) {
-	idc = session.getAttribute("idc").toString();
-	name = session.getAttribute("customer").toString();
+	String idc = session.getAttribute("idc").toString();
+	String name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
 }
@@ -18,6 +16,7 @@ Statement stmt = con.createStatement();
 String id = request.getParameter("view");
 ResultSet rs = stmt.executeQuery("SELECT * FROM service_payments WHERE service_payment_id = " + id);
 rs.next();
+
 int service_payment_id = rs.getInt("service_payment_id");
 String payment_no = rs.getString("payment_no");
 String customer = rs.getString("customer");
@@ -68,7 +67,7 @@ String status = rs.getString("status");
 		<br>
 		<div class="container">
 			<div class="row">
-				<form action="updatePaymentCustomer" method="post" onsubmit="return confirm('Submit payment for this service?');">
+				<form action="updatePaymentCustomer" method="post" onsubmit="return confirm('Submit your payment for this service?');">
 					<input type="hidden" id="service_payment_id" name="service_payment_id" value="<%out.print(service_payment_id);%>">
 					<div class="col-sm-9 col-md-9 col-lg-9 mx-auto">
 						<div class="card border-0 shadow rounded-3 my-5">
@@ -113,15 +112,14 @@ String status = rs.getString("status");
 												<td>
 													<% if(status.equals("Payment due")) { %>
 												    <select class="form-control" id="method" name="method" required="required">
-												    	<option disabled="disabled" selected="selected">Select payment method...</option>
-												    	<option value="Cash">Cash</option>
-												    	<option value="Debit card">Debit card</option>
-												    	<option value="Credit card">Credit card</option>
-												    	<option value="Bank transfer">Bank transfer</option>
-												    	<option value="GOPAY">GOPAY</option>
-												    	<option value="DANA">DANA</option>
-												    	<option value="OVO">OVO</option>
-												    </select>
+						                				<option value="" disabled="disabled" selected="selected">Select payment method...</option>
+						                				<option value="Cash">Cash</option>
+						                				<option value="Debit card">Debit card</option>
+						                				<option value="Credit card">Credit card</option>
+						                				<option value="DANA">DANA</option>
+						                				<option value="GOPAY">GOPAY</option>
+						                				<option value="OVO">OVO</option>
+						                			</select>
 												    <% } else if(status.equals("Confirming")) { %>
 												    <%out.print(method);%>
 												    <% } %>
@@ -133,8 +131,7 @@ String status = rs.getString("status");
 								<% if(status.equals("Payment due")) { %>
 								<hr>
 								<div class="text-center">
-									<input type="hidden" value="<% out.print(service_payment_id); %>" name="update_payment">
-							        <input type="submit" class="btn btn-warning btn-user" value="Submit payment">
+							        <input class="btn btn-warning" type="submit" value="Submit payment">
 								</div>
 								<% } %>
 			          		</div>
@@ -143,15 +140,8 @@ String status = rs.getString("status");
 	      		</form>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/scripts.js"></script>
-        <script type="text/javascript">
-        	
-		</script>
 	</body>
 </html>

@@ -24,6 +24,8 @@ if(session.getAttribute("idc") != null) {
 	              				<%
 								if(request.getParameter("success") != null) {
 									out.print("Registration success. Please login.");
+								} else if(request.getParameter("reset") != null) {
+									out.print("Password reset success. Please login.");
 								}
 								%>
 	              				</p>
@@ -41,7 +43,9 @@ if(session.getAttribute("idc") != null) {
 	              					if(session.getAttribute("val").equals("1")) {
 	          							out.print("Email or password is incorrect!");
 	                            	}
-	              				} catch(Exception e) {}
+	              				} catch(Exception e) {
+	              					System.out.println(e);
+	              				}
 								%>
 								</p>
 								<hr class="my-4">
@@ -63,16 +67,41 @@ if(session.getAttribute("idc") != null) {
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="py-4 text-center text-medium navbar-dark bg-secondary" style="color:white">
-			<div class="container">
-				<h6 class="list-inline-item" style="color: white; padding:10px">Copyright &copy; AutoMech 2022</h6>
-			</div>
-		</footer>
+	  	<jsp:include page="support/footer.jsp"></jsp:include>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/scripts.js"></script>
         <script type="text/javascript">
 			function validate() {
+				var email = document.getElementById("email");
+				var email_pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 				
+				var phone_no = document.getElementById("phone_no");
+				var phone_pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+				
+	        	var password = document.getElementById("password");
+				var password_pattern = ;
+				
+	        	function validate() {
+	        		if(email.value.match(email_pattern)) {
+	    				email.setCustomValidity("");
+	    			} else {
+	    				email.setCustomValidity("Enter a correct email format.");
+	    			}
+	        		
+	        		if(phone_no.value.match(phone_pattern)) {
+	    				phone_no.setCustomValidity("");
+	    			} else {
+	    				phone_no.setCustomValidity("Enter a correct phone number format.");
+	    			}
+	        		
+					if(password.value.match(password_pattern)) {
+						password.setCustomValidity("");
+					} else {
+						password.setCustomValidity("Password cannot be like this.");
+					}
+	        	}
+				password.onchange = validate;
+				password.onkeyup = validate;
 			}
 		</script>
 	</body>

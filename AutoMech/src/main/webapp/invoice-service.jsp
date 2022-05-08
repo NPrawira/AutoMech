@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-String idc = null;
-String name = null;
 if(session.getAttribute("idc") != null) {
-	idc = session.getAttribute("idc").toString();
-	name = session.getAttribute("customer").toString();
+	String id = session.getAttribute("idc").toString();
+	String name = session.getAttribute("customer").toString();
 } else {
 	response.sendRedirect("login.jsp");
 }
@@ -34,20 +32,6 @@ String method = rs.getString("method");
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 		<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript">
-			function PrintElem(elem) {
-			    var mywindow = window.open('', 'Print', 'height=720,width=1280');
-			    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-			    mywindow.document.write('<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">');
-			    mywindow.document.write('</head><body style="padding-top: 150px">');
-			    mywindow.document.write(document.getElementById(elem).innerHTML);
-			    mywindow.document.write('</body></html>');
-			    mywindow.document.close();
-			    mywindow.focus();
-			    mywindow.print();
-			    return true;
-			}
-	    </script>
         <style type="text/css">
         	.invoice-title h2, .invoice-title h3 {
 			    display: inline-block;
@@ -182,5 +166,19 @@ String method = rs.getString("method");
 			<button class="btn btn-primary" onclick="PrintElem('invoice')">Print invoice</button>
 			<button class="btn btn-secondary" onclick="history.back()">Back</button>
 		</div>
+		<script type="text/javascript">
+			function PrintElem(elem) {
+			    var mywindow = window.open('', 'Print', 'height=720,width=1280');
+			    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+			    mywindow.document.write('<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">');
+			    mywindow.document.write('</head><body style="padding-top: 150px">');
+			    mywindow.document.write(document.getElementById(elem).innerHTML);
+			    mywindow.document.write('</body></html>');
+			    mywindow.document.close();
+			    mywindow.focus();
+			    mywindow.print();
+			    return true;
+			}
+	    </script>
 	</body>
 </html>
